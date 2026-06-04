@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Todo, TodoStatus } from '../types';
 import { todoService } from '../services/todoService';
-import '../styles/TodoForm.css';
+
 
 interface TodoFormProps {
   todo?: Todo | null;
@@ -44,7 +44,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
         result = await todoService.createTodo({
           title: formData.title,
           description: formData.description,
-          assignTo: formData.assignTo,
+          assignedTo: formData.assignedTo,
           status: formData.status,
         });
       } else if (todo) {
