@@ -6,17 +6,38 @@ const keycloakInstance = new Keycloak({
   clientId: 'todoprojekt-frontend', 
 });
 
+// Interne Variablen zur Absicherung gegen Mehrfach-Initialisierung
+let isInitialized = false;
+let initPromise: Promise<boolean> | null = null;
+
 export const initKeycloak = async (): Promise<boolean> => {
-  try {
-    const authenticated = await keycloakInstance.init({
-      onLoad: 'login-required',   
-      checkLoginIframe: false,   
-    });
-    return authenticated;
-  } catch (error) {
-    console.error('Failed to initialize Keycloak', error);
-    throw error;
+  // 1. Wenn bereits erfolgreich initialisiert, sofort true zurückgeben
+  if (isInitialized) {
+    return true;
   }
+
+  // 2. Wenn die Initialisierung gerade schon läuft, hänge dich an dasselbe Promise an
+  if (initPromise) {
+    return initPromise;
+  }
+
+  // 3. Starte die Initialisierung und speichere das Promise ab
+  initPromise = (async () => {
+    try {
+      const authenticated = await keycloakInstance.init({
+        onLoad: 'login-required',   
+        checkLoginIframe: false,   
+      });
+      isInitialized = true; // Erfolg merken!
+      return authenticated;
+    } catch (error) {
+      console.error('Failed to initialize Keycloak', error);
+      initPromise = null; // Bei Fehler zurücksetzen, um Neustart zu erlauben
+      throw error;
+    }
+  })();
+
+  return initPromise;
 };
 
 export const getKeycloak = () => keycloakInstance;
@@ -29,11 +50,15 @@ export const logout = (): void => {
 
 export const getToken = (): string | undefined => keycloakInstance.token;
 
-export const isTokenExpired = (): boolean => keycloakInstance.isTokenExpired();
-
+export const isTokenExpired = (): boolean => {
+  // Absicherung falls Keycloak noch nicht bereit ist
+  if (!keycloakInstance.token) return true;
+  return keycloakInstance.isTokenExpired();
+};
 
 export const refreshToken = async (): Promise<string | undefined> => {
   try {
+    // Aktualisiert das Token nur, wenn es weniger als 30 Sekunden gültig ist
     await keycloakInstance.updateToken(30);
     return keycloakInstance.token;
   } catch (error) {
@@ -41,7 +66,6 @@ export const refreshToken = async (): Promise<string | undefined> => {
     throw error;
   }
 };
-
 
 export const hasRole = (role: string): boolean => {
   return keycloakInstance.hasRealmRole(role);
