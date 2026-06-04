@@ -23,13 +23,14 @@ export const getKeycloak = () => keycloakInstance;
 
 export const logout = (): void => {
   keycloakInstance.logout({
-    redirectUri: window.location.origin // Leitet nach dem Logout wieder zurück zum Frontend
+    redirectUri: window.location.origin 
   });
 };
 
 export const getToken = (): string | undefined => keycloakInstance.token;
 
 export const isTokenExpired = (): boolean => keycloakInstance.isTokenExpired();
+
 
 export const refreshToken = async (): Promise<string | undefined> => {
   try {
@@ -40,6 +41,7 @@ export const refreshToken = async (): Promise<string | undefined> => {
     throw error;
   }
 };
+
 
 export const hasRole = (role: string): boolean => {
   return keycloakInstance.hasRealmRole(role);
