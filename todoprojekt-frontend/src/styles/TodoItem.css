@@ -1,0 +1,98 @@
+.todo-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  background-color: #fff;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.todo-item:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--primary-color);
+}
+
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.todo-title {
+  font-size: 1.2rem;
+  margin: 0;
+  color: var(--primary-color);
+  transition: color var(--transition);
+}
+
+.todo-title:hover {
+  text-decoration: underline;
+}
+
+.todo-status {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.todo-description {
+  color: var(--text-dark);
+  margin: 0.5rem 0 1rem 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.todo-meta {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.todo-meta span {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.todo-actions button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .todo-item {
+    padding: 1rem;
+  }
+
+  .todo-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .todo-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .todo-actions {
+    gap: 0.3rem;
+  }
+
+  .todo-actions button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}

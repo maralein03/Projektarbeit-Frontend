@@ -1,0 +1,115 @@
+.question-list {
+  background-color: var(--light-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.question-list h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-dark);
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.questions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.questions::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.questions::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.questions::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+.question-item {
+  background: white;
+  border-left: 4px solid var(--primary-color);
+  padding: 1rem;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  box-shadow: var(--shadow);
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.question-author {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.question-time {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.question-content {
+  margin: 0;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.question-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.question-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.question-form button {
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .question-list {
+    padding: 1rem;
+  }
+
+  .questions {
+    max-height: 200px;
+  }
+
+  .question-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
