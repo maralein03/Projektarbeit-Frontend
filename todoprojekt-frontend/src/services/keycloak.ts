@@ -6,7 +6,7 @@ const keycloakInstance = new Keycloak({
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'todo-app',
 });
 
-export const initKeycloak = async () => {
+export const initKeycloak = async (): Promise<boolean> => {
   try {
     const authenticated = await keycloakInstance.init({
       onLoad: 'login-required',
@@ -21,15 +21,15 @@ export const initKeycloak = async () => {
 
 export const getKeycloak = () => keycloakInstance;
 
-export const logout = () => {
+export const logout = (): void => {
   keycloakInstance.logout();
 };
 
-export const getToken = () => keycloakInstance.token;
+export const getToken = (): string | undefined => keycloakInstance.token;
 
-export const isTokenExpired = () => keycloakInstance.isTokenExpired();
+export const isTokenExpired = (): boolean => keycloakInstance.isTokenExpired();
 
-export const refreshToken = async () => {
+export const refreshToken = async (): Promise<string | undefined> => {
   try {
     await keycloakInstance.refreshToken();
     return keycloakInstance.token;
@@ -39,7 +39,7 @@ export const refreshToken = async () => {
   }
 };
 
-export const hasRole = (role: string) => {
+export const hasRole = (role: string): boolean => {
   return keycloakInstance.hasRealmRole(role) || keycloakInstance.hasClientRole(role);
 };
 

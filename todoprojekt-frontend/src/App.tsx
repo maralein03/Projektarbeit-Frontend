@@ -5,7 +5,7 @@ import { Loading } from './pages/Loading';
 import './styles/globals.css';
 import './index.css';
 
-const AppContent = () => {
+const AppContent: React.FC = () => {
   const { isLoading, isAuthenticated } = useAuth();
 
   if (isLoading) {

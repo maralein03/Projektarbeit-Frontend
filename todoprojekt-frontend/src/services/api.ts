@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { getToken, isTokenExpired, refreshToken } from './keycloak';
+import { getToken, refreshToken } from './keycloak';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081/api';
 
