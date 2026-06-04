@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Todo, TodoStatus } from '../types';
 import { todoService } from '../services/todoService';
-import '../styles/TodoForm.css';
+
 
 interface TodoFormProps {
   todo?: Todo | null;
@@ -14,8 +14,8 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
   const [formData, setFormData] = useState({
     title: todo?.title || '',
     description: todo?.description || '',
-    assignTo: todo?.assignTo || '',
-    status: (todo?.status || 'Open') as TodoStatus,
+    assignedTo: todo?.assignedTo || '',
+    status: (todo?.status || 'OPEN') as TodoStatus,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
         result = await todoService.createTodo({
           title: formData.title,
           description: formData.description,
-          assignTo: formData.assignTo,
+          assignedTo: formData.assignedTo,
           status: formData.status,
         });
       } else if (todo) {
@@ -112,12 +112,12 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
         </div>
 
         <div className="form-group">
-          <label htmlFor="assignTo">Zugewiesen an *</label>
+          <label htmlFor="assignedTo">Zugewiesen an *</label>
           <input
             type="text"
-            id="assignTo"
-            name="assignTo"
-            value={formData.assignTo}
+            id="assignedTo"
+            name="assignedTo"
+            value={formData.assignedTo}
             onChange={handleChange}
             placeholder="Name des Lernenden"
             required
@@ -132,10 +132,10 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
             value={formData.status}
             onChange={handleChange}
           >
-            <option value="Open">Offen</option>
-            <option value="In Progress">In Bearbeitung</option>
-            <option value="Done">Erledigt</option>
-            <option value="Accepted">Akzeptiert</option>
+            <option value="OPEN">Offen</option>
+            <option value="IN_PROGRESS">In Bearbeitung</option>
+            <option value="DONE">Erledigt</option>
+            <option value="ACCEPTED">Akzeptiert</option>
           </select>
         </div>
 
