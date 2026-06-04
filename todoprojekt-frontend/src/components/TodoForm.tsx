@@ -38,7 +38,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
 
     try {
       setIsSubmitting(true);
-      let result: Todo;
+      let result;
 
       if (isNew) {
         result = await todoService.createTodo({
@@ -161,3 +161,5 @@ export const TodoForm: React.FC<TodoFormProps> = ({ todo, onSubmit, onCancel, is
     </div>
   );
 };
+
+

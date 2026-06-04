@@ -18,7 +18,7 @@ export const Dashboard: React.FC = () => {
 
   const isInstructor = hasRole('ROLE_UPDATE');
 
-  const handleSelectTodo = (todo: Todo) => {
+  const handleSelectTodo = (todo) => {
     setSelectedTodo(todo);
     setIsDetailOpen(true);
   };
@@ -29,13 +29,13 @@ export const Dashboard: React.FC = () => {
     setIsFormOpen(true);
   };
 
-  const handleFormSubmit = async (todo: Todo) => {
+  const handleFormSubmit = async (todo) => {
     await fetchTodos();
     setIsFormOpen(false);
     setIsNewTodo(false);
   };
 
-  const handleTodoUpdate = async (todo: Todo) => {
+  const handleTodoUpdate = async (todo) => {
     await fetchTodos();
     if (selectedTodo?.id === todo.id) {
       setSelectedTodo(todo);
