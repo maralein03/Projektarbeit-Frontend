@@ -1,10 +1,10 @@
-export type TodoStatus = 'Open' | 'In Progress' | 'Done' | 'Accepted';
+export type TodoStatus = 'OPEN' | 'IN_PROGRESS' | 'DONE' | 'ACCEPTED';
 
 export interface Todo {
   id: number;
   title: string;
   description: string;
-  assignTo: string;
+  assignedTo: string;
   status: TodoStatus;
   createdAt: string;
 }

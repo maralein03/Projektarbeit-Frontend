@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Todo, TodoStatus } from '../types';
 import { todoService } from '../services/todoService';
-import '../styles/TodoItem.css';
+
 
 interface TodoItemProps {
   todo: Todo;
@@ -46,10 +46,10 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 
   const getStatusColor = (status: TodoStatus) => {
     const colors: Record<TodoStatus, string> = {
-      Open: '#ff6b6b',
-      'In Progress': '#ffd93d',
-      Done: '#6bcf7f',
-      Accepted: '#4d96ff',
+      OPEN: '#ff6b6b',
+      IN_PROGRESS: '#ffd93d',
+      DONE: '#6bcf7f',
+      ACCEPTED: '#4d96ff',
     };
     return colors[status] || '#999';
   };
@@ -69,7 +69,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       </div>
       <p className="todo-description">{todo.description}</p>
       <div className="todo-meta">
-        <span>Zugewiesen an: <strong>{todo.assignTo}</strong></span>
+        <span>Zugewiesen an: <strong>{todo.assignedTo}</strong></span>
         <span>Erstellt: {new Date(todo.createdAt).toLocaleDateString('de-DE')}</span>
       </div>
 
@@ -77,14 +77,14 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         {!isInstructor && (
           <>
             <button
-              onClick={() => handleStatusChange('In Progress')}
-              disabled={isUpdatingStatus || todo.status === 'Done'}
+              onClick={() => handleStatusChange('IN_PROGRESS')}
+              disabled={isUpdatingStatus || todo.status === 'DONE'}
               className="btn-secondary"
             >
               In Bearbeitung
             </button>
             <button
-              onClick={() => handleStatusChange('Done')}
+              onClick={() => handleStatusChange('DONE')}
               disabled={isUpdatingStatus}
               className="btn-secondary"
             >
@@ -92,7 +92,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             </button>
             <button
               onClick={handleAccept}
-              disabled={isUpdatingStatus || todo.status !== 'Done'}
+              disabled={isUpdatingStatus || todo.status !== 'DONE'}
               className="btn-primary"
             >
               Annehmen
@@ -102,7 +102,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         {isInstructor && (
           <>
             <button
-              onClick={() => handleStatusChange('Open')}
+              onClick={() => handleStatusChange('OPEN')}
               disabled={isUpdatingStatus}
               className="btn-secondary"
             >
