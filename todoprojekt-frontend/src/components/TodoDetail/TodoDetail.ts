@@ -10,27 +10,36 @@ const TEMPLATE = `
     </div>
 
     <div class="modal-content">
-      <div class="todo-detail-section">
-        <h3>Aufgabendetails</h3>
-        <div class="detail-row">
-          <label>Status:</label>
-          <span class="status-badge" id="detailStatus">OPEN</span>
-        </div>
-        <div class="detail-row">
-          <label>Zugewiesen an:</label>
-          <span id="detailAssignedTo">-</span>
-        </div>
-        <div class="detail-row">
-          <label>Erstellt am:</label>
-          <span id="detailCreatedAt">-</span>
-        </div>
-        <div class="detail-row full-width">
-          <label>Beschreibung:</label>
-          <p class="description" id="detailDescription">-</p>
+      <div id="loadingContainer" class="loading-container" style="display: flex; justify-content: center; align-items: center; min-height: 300px;">
+        <div style="text-align: center;">
+          <div style="font-size: 2rem; margin-bottom: 10px;">⏳</div>
+          <p>Wird geladen...</p>
         </div>
       </div>
 
-      <div id="questionListContainer"></div>
+      <div id="contentContainer" style="display: none;">
+        <div class="todo-detail-section">
+          <h3>Aufgabendetails</h3>
+          <div class="detail-row">
+            <label>Status:</label>
+            <span class="status-badge" id="detailStatus">OPEN</span>
+          </div>
+          <div class="detail-row">
+            <label>Zugewiesen an:</label>
+            <span id="detailAssignedTo">-</span>
+          </div>
+          <div class="detail-row">
+            <label>Erstellt am:</label>
+            <span id="detailCreatedAt">-</span>
+          </div>
+          <div class="detail-row full-width">
+            <label>Beschreibung:</label>
+            <p class="description" id="detailDescription">-</p>
+          </div>
+        </div>
+
+        <div id="questionListContainer"></div>
+      </div>
     </div>
 
     <div class="modal-footer">
@@ -78,11 +87,19 @@ export class TodoDetailComponent {
    */
   async show(todo: Todo): Promise<void> {
     this.todo = todo;
-    this.render();
 
     if (this.overlay) {
       this.overlay.style.display = 'flex';
     }
+
+    // Zeige Loading-State
+    const loadingContainer = this.container?.querySelector('#loadingContainer');
+    const contentContainer = this.container?.querySelector('#contentContainer');
+    if (loadingContainer) loadingContainer.style.display = 'flex';
+    if (contentContainer) contentContainer.style.display = 'none';
+
+    // Rendere Daten
+    this.render();
 
     // QuestionList laden und anzeigen
     const questionListContainer = this.container?.querySelector(
@@ -91,8 +108,12 @@ export class TodoDetailComponent {
     if (questionListContainer && todo.id) {
       this.questionList = new QuestionListComponent();
       await this.questionList.init('#questionListContainer');
-      this.questionList.loadQuestions(todo.id);
+      await this.questionList.loadQuestions(todo.id);
     }
+
+    // Verstecke Loading, zeige Content
+    if (loadingContainer) loadingContainer.style.display = 'none';
+    if (contentContainer) contentContainer.style.display = 'block';
   }
 
   /**

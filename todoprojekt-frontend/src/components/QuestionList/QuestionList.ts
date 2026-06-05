@@ -2,6 +2,28 @@ import { Question } from '../../types';
 import { questionService } from '../../services/questionService';
 import { authContext } from '../../context/AuthContext';
 
+const TEMPLATE = `
+<div class="question-list">
+  <h3>💬 Fragen & Chat (<span id="questionCount">0</span>)</h3>
+
+  <div class="questions" id="questionsContainer">
+    <p class="loading">Wird geladen...</p>
+  </div>
+
+  <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+  <form class="question-form" id="questionForm" style="display: none;">
+    <textarea
+      id="questionInput"
+      class="form-control"
+      placeholder="Schreibe eine Frage oder einen Kommentar..."
+      rows="3"
+    ></textarea>
+    <button type="submit" class="btn-primary" id="submitBtn">Frage stellen</button>
+  </form>
+</div>
+`;
+
 export class QuestionListComponent {
   private container: HTMLElement | null;
   private questions: Question[] = [];
@@ -16,13 +38,13 @@ export class QuestionListComponent {
   /**
    * Initialisiert die QuestionList-Komponente
    */
-  async init(parentSelector: string, html: string): Promise<void> {
+  async init(parentSelector: string): Promise<void> {
     const parent = document.querySelector(parentSelector);
     if (!parent) {
       throw new Error(`Parent element ${parentSelector} not found`);
     }
 
-    parent.innerHTML = html;
+    parent.innerHTML = TEMPLATE;
     this.container = parent.querySelector('.question-list') as HTMLElement;
 
     if (!this.container) {
@@ -154,6 +176,17 @@ export class QuestionListComponent {
       questionInput.value = '';
       this.updateUI();
       this.hideError();
+
+      // Zeige Erfolgs-Benachrichtigung
+      this.showNotification('✅ Frage erfolgreich gesendet!');
+
+      // Browser-Notification
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('Todo App', {
+          body: `Deine Frage zu diesem Todo wurde gesendet! 💬`,
+          tag: `todo-${this.todoId}`
+        });
+      }
     } catch (error) {
       console.error('Error creating question:', error);
       this.showError('Fehler beim Speichern der Frage');
@@ -161,6 +194,43 @@ export class QuestionListComponent {
       this.isSubmitting = false;
       this.updateSubmitButton();
     }
+  }
+
+  /**
+   * Zeigt eine Erfolgs-Benachrichtigung an
+   */
+  private showNotification(message: string): void {
+    const container = this.container;
+    if (!container) return;
+
+    // Entferne alte Notification
+    const oldNotif = container.querySelector('.notification');
+    if (oldNotif) oldNotif.remove();
+
+    // Erstelle neue Notification
+    const notif = document.createElement('div');
+    notif.className = 'notification';
+    notif.textContent = message;
+    notif.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 9999;
+      animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(notif);
+
+    // Auto-remove nach 3 Sekunden
+    setTimeout(() => {
+      notif.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => notif.remove(), 300);
+    }, 3000);
   }
 
   /**

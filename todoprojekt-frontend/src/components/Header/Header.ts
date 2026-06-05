@@ -34,6 +34,7 @@ export class HeaderComponent {
   private logoutCallback: (() => void) | null = null;
   private newTodoCallback: (() => void) | null = null;
   private activeFilter: FilterType = 'ALL';
+  private isInstructor: boolean = false;
 
   constructor() {
     this.container = null;
@@ -124,8 +125,11 @@ export class HeaderComponent {
   updateUserInfo(username: string, isInstructor: boolean): void {
     if (!this.container) return;
 
+    this.isInstructor = isInstructor;
+
     const usernameEl = this.container.querySelector('#username');
     const roleBadgeEl = this.container.querySelector('#roleBadge');
+    const newTodoBtn = this.container.querySelector('#newTodoBtn');
 
     if (usernameEl) {
       usernameEl.textContent = username || '-';
@@ -137,6 +141,11 @@ export class HeaderComponent {
       } else {
         roleBadgeEl.textContent = '🧑‍🎓 Lernender';
       }
+    }
+
+    // "Neue Todo erstellen" nur für Ausbilder anzeigen
+    if (newTodoBtn) {
+      newTodoBtn.style.display = isInstructor ? 'inline-block' : 'none';
     }
   }
 
