@@ -54,6 +54,18 @@
   -webkit-box-orient: vertical;
 }
 
+.status-section {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.chat-badge {
+  font-size: 1.2rem;
+  animation: pulse 1.5s infinite;
+}
+
 .status-badge {
   display: inline-block;
   padding: 4px 8px;

@@ -8,7 +8,10 @@ const TEMPLATE = `
       <h4 class="todo-title" id="todoTitle">-</h4>
       <p class="todo-description" id="todoDescription">-</p>
     </div>
-    <span class="status-badge" id="statusBadge">OPEN</span>
+    <div class="status-section">
+      <span class="status-badge" id="statusBadge">OPEN</span>
+      <span class="chat-badge" id="chatBadge" style="display: none;">💬</span>
+    </div>
   </div>
 
   <div class="card-body">
@@ -214,6 +217,16 @@ export class TodoItemComponent {
    */
   onUpdate(callback: (todo: Todo) => void): void {
     this.updateCallback = callback;
+  }
+
+  /**
+   * Zeigt das Chat-Badge wenn Fragen existieren
+   */
+  showChatBadge(show: boolean = true): void {
+    const chatBadge = this.container?.querySelector('#chatBadge');
+    if (chatBadge) {
+      chatBadge.style.display = show ? 'inline-block' : 'none';
+    }
   }
 
   /**
