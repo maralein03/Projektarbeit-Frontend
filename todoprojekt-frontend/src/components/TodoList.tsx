@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Todo } from '../types';
 import { TodoItem } from './TodoItem';
 import '../styles/TodoList.css';
@@ -16,39 +16,23 @@ export const TodoList: React.FC<TodoListProps> = ({
   onTodoUpdate,
   isInstructor,
 }) => {
-  const [filterStatus, setFilterStatus] = useState<string>('All');
-
-  const filteredTodos = todos.filter((todo) => {
-    if (filterStatus === 'All') return true;
-    return todo.status === filterStatus;
-  });
-
-  const statuses = ['All', 'Open', 'In Progress', 'Done', 'Accepted'];
+  // HINWEIS: Der lokale filterStatus und das Filtern wurden entfernt,
+  // da das Dashboard jetzt bereits die fertig gefilterten To-Dos übergibt!
 
   return (
     <div className="todo-list">
       <div className="list-header">
         <h2>📋 Meine Aufgaben</h2>
-        <div className="filter-buttons">
-          {statuses.map((status) => (
-            <button
-              key={status}
-              className={`filter-btn ${filterStatus === status ? 'active' : ''}`}
-              onClick={() => setFilterStatus(status)}
-            >
-              {status === 'All' ? '🔄 Alle' : status}
-            </button>
-          ))}
-        </div>
+        {/* Die komplette "filter-buttons" Div-Box wurde hier entfernt */}
       </div>
 
       <div className="todos-container">
-        {filteredTodos.length === 0 ? (
+        {todos.length === 0 ? (
           <div className="no-todos">
             <p>Keine Aufgaben gefunden</p>
           </div>
         ) : (
-          filteredTodos.map((todo) => (
+          todos.map((todo) => (
             <TodoItem
               key={todo.id}
               todo={todo}
@@ -62,4 +46,3 @@ export const TodoList: React.FC<TodoListProps> = ({
     </div>
   );
 };
-
