@@ -1,88 +1,108 @@
 .todo-item-card {
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
 }
 
 .todo-item-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
-  gap: 8px;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.todo-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .todo-title {
-  margin: 0;
+  margin: 0 0 4px 0;
   color: #1a1a1a;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   flex: 1;
   cursor: pointer;
   text-decoration: none;
   transition: color 0.2s;
+  word-break: break-word;
 }
 
 .todo-title:hover {
   color: #0066cc;
 }
 
+.todo-description {
+  margin: 0;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 .status-badge {
   display: inline-block;
   padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   white-space: nowrap;
+  flex-shrink: 0;
+  border: 2px solid transparent;
 }
 
 .status-badge.open {
   background-color: #fee;
   color: #c33;
+  border-color: #f99;
 }
 
 .status-badge.in-progress {
   background-color: #fde;
   color: #963;
+  border-color: #f99;
 }
 
 .status-badge.done {
   background-color: #efe;
   color: #363;
+  border-color: #9f9;
 }
 
 .status-badge.accepted {
   background-color: #e8f4f8;
   color: #036;
+  border-color: #8df;
 }
 
 .card-body {
-  margin-bottom: 12px;
-}
-
-.todo-description {
-  margin: 0 0 10px 0;
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .todo-meta {
   display: flex;
-  gap: 16px;
-  font-size: 0.85rem;
+  gap: 12px;
+  font-size: 0.75rem;
   color: #999;
+  flex-wrap: wrap;
 }
 
 .meta-item {
@@ -97,6 +117,8 @@
 .card-actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .btn-action {
@@ -118,6 +140,30 @@
 
 .btn-select {
   flex: 1;
+  min-width: 120px;
+  background-color: #f0f7ff;
+  border-color: #add8ff;
+  color: #0066cc;
+}
+
+.btn-select:hover {
+  background-color: #e6f2ff;
+  border-color: #0066cc;
+}
+
+.status-change-container {
+  position: relative;
+}
+
+.btn-status-change {
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+}
+
+.btn-status-change:hover {
+  background-color: #ffe69c;
+  border-color: #ffc107;
 }
 
 .btn-status {
@@ -134,31 +180,33 @@
 .status-menu {
   position: absolute;
   top: 100%;
-  right: 16px;
+  right: 0;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 10;
-  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 160px;
   margin-top: 4px;
 }
 
 .status-option {
   display: block;
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border: none;
   background-color: transparent;
   color: #333;
   text-align: left;
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 500;
   transition: background-color 0.2s;
 }
 
 .status-option:hover {
-  background-color: #f0f0f0;
+  background-color: #f0f7ff;
+  color: #0066cc;
 }
 
 .status-option:first-child {

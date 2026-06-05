@@ -4,12 +4,14 @@ import { todoService } from '../../services/todoService';
 const TEMPLATE = `
 <div class="todo-item-card">
   <div class="card-header">
-    <h4 class="todo-title" id="todoTitle">-</h4>
+    <div class="todo-info">
+      <h4 class="todo-title" id="todoTitle">-</h4>
+      <p class="todo-description" id="todoDescription">-</p>
+    </div>
     <span class="status-badge" id="statusBadge">OPEN</span>
   </div>
 
   <div class="card-body">
-    <p class="todo-description" id="todoDescription">-</p>
     <div class="todo-meta">
       <span class="meta-item">
         <strong>Zugewiesen an:</strong> <span id="assignedTo">-</span>
@@ -21,15 +23,16 @@ const TEMPLATE = `
   </div>
 
   <div class="card-actions">
-    <button class="btn-action btn-select" id="selectBtn">Details anzeigen</button>
-    <button class="btn-action btn-status" id="statusBtn" style="display: none;">Status ändern</button>
-  </div>
-
-  <div id="statusMenu" class="status-menu" style="display: none;">
-    <button class="status-option" data-status="OPEN">Offen</button>
-    <button class="status-option" data-status="IN_PROGRESS">In Arbeit</button>
-    <button class="status-option" data-status="DONE">Erledigt</button>
-    <button class="status-option" data-status="ACCEPTED">Akzeptiert</button>
+    <button class="btn-action btn-select" id="selectBtn">📖 Details anzeigen</button>
+    <div class="status-change-container" id="statusContainer" style="display: none;">
+      <button class="btn-action btn-status-change" id="statusChangeBtn">⚙️ Status ändern</button>
+      <div id="statusMenu" class="status-menu" style="display: none;">
+        <button class="status-option" data-status="OPEN">Offen</button>
+        <button class="status-option" data-status="IN_PROGRESS">In Arbeit</button>
+        <button class="status-option" data-status="DONE">Erledigt</button>
+        <button class="status-option" data-status="ACCEPTED">Akzeptiert</button>
+      </div>
+    </div>
   </div>
 
   <div id="loadingSpinner" class="loading-spinner" style="display: none;">
@@ -88,7 +91,7 @@ export class TodoItemComponent {
     const statusBadgeEl = this.container.querySelector('#statusBadge');
     const assignedToEl = this.container.querySelector('#assignedTo');
     const createdAtEl = this.container.querySelector('#createdAt');
-    const statusBtn = this.container.querySelector('#statusBtn');
+    const statusContainer = this.container.querySelector('#statusContainer');
 
     if (titleEl) titleEl.textContent = this.todo.title || '-';
     if (descriptionEl) descriptionEl.textContent = this.todo.description || '-';
@@ -98,8 +101,9 @@ export class TodoItemComponent {
 
     this.updateStatusBadge(this.todo.status);
 
-    if (statusBtn && this.isInstructor) {
-      statusBtn.style.display = 'block';
+    // Zeige Status-Change nur für Instructors
+    if (statusContainer) {
+      statusContainer.style.display = this.isInstructor ? 'block' : 'none';
     }
   }
 
@@ -141,10 +145,12 @@ export class TodoItemComponent {
       }
     });
 
-    const statusBtn = this.container.querySelector('#statusBtn');
+    const statusChangeBtn = this.container.querySelector('#statusChangeBtn');
     const statusMenu = this.container.querySelector('#statusMenu');
 
-    statusBtn?.addEventListener('click', () => {
+    // Status-Change Button klickbar
+    statusChangeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isVisible = statusMenu?.style.display !== 'none';
       statusMenu!.style.display = isVisible ? 'none' : 'block';
     });
