@@ -1,5 +1,4 @@
 import { Todo, TodoStatus } from '../../types';
-import { QuestionListComponent } from '../QuestionList/QuestionList';
 
 const TEMPLATE = `
 <div class="todo-detail-overlay" id="todoDetailOverlay">
@@ -10,14 +9,7 @@ const TEMPLATE = `
     </div>
 
     <div class="modal-content">
-      <div id="loadingContainer" class="loading-container" style="display: flex; justify-content: center; align-items: center; min-height: 300px;">
-        <div style="text-align: center;">
-          <div style="font-size: 2rem; margin-bottom: 10px;">⏳</div>
-          <p>Wird geladen...</p>
-        </div>
-      </div>
-
-      <div id="contentContainer" style="display: none;">
+      <div id="contentContainer">
         <div class="todo-detail-section">
           <h3>Aufgabendetails</h3>
           <div class="detail-row">
@@ -37,8 +29,6 @@ const TEMPLATE = `
             <p class="description" id="detailDescription">-</p>
           </div>
         </div>
-
-        <div id="questionListContainer"></div>
       </div>
     </div>
 
@@ -55,7 +45,6 @@ export class TodoDetailComponent {
   private todo: Todo | null = null;
   private closeCallback: (() => void) | null = null;
   private updateCallback: ((todo: Todo) => void) | null = null;
-  private questionList: QuestionListComponent | null = null;
 
   constructor() {
     this.container = null;
@@ -95,14 +84,13 @@ export class TodoDetailComponent {
     // Zeige Loading-State
     const loadingContainer = this.container?.querySelector('#loadingContainer');
     const contentContainer = this.container?.querySelector('#contentContainer');
-    if (loadingContainer) loadingContainer.style.display = 'flex';
-    if (contentContainer) contentContainer.style.display = 'none';
+    if (contentContainer) contentContainer.style.display = 'block';
 
     // Rendere Daten
     this.render();
 
-    // QuestionList laden und anzeigen
-    const questionListContainer = this.container?.querySelector(
+    // QuestionList im Popover laden
+    const questionListContainer = this.overlay?.querySelector(
       '#questionListContainer'
     );
     if (questionListContainer && todo.id) {
@@ -110,10 +98,6 @@ export class TodoDetailComponent {
       await this.questionList.init('#questionListContainer');
       await this.questionList.loadQuestions(todo.id);
     }
-
-    // Verstecke Loading, zeige Content
-    if (loadingContainer) loadingContainer.style.display = 'none';
-    if (contentContainer) contentContainer.style.display = 'block';
   }
 
   /**
@@ -193,11 +177,6 @@ export class TodoDetailComponent {
   hide(): void {
     if (this.overlay) {
       this.overlay.style.display = 'none';
-    }
-
-    if (this.questionList) {
-      this.questionList.destroy();
-      this.questionList = null;
     }
   }
 

@@ -1,5 +1,6 @@
 import { Todo, TodoStatus } from '../../types';
 import { todoService } from '../../services/todoService';
+import { QuestionListComponent } from '../QuestionList/QuestionList';
 
 const TEMPLATE = `
 <div class="todo-item-card">
@@ -10,7 +11,7 @@ const TEMPLATE = `
     </div>
     <div class="status-section">
       <span class="status-badge" id="statusBadge">OPEN</span>
-      <span class="chat-badge" id="chatBadge" style="display: none;">💬</span>
+      <button class="chat-icon-btn" id="chatIconBtn" title="Chat öffnen">💬</button>
     </div>
   </div>
 
@@ -38,6 +39,15 @@ const TEMPLATE = `
     </div>
   </div>
 
+  <!-- Chat Popover -->
+  <div class="chat-popover" id="chatPopover" style="display: none;">
+    <div class="popover-header">
+      <h3>💬 Fragen & Chat</h3>
+      <button class="popover-close" id="chatPopoverClose">✕</button>
+    </div>
+    <div class="popover-content" id="questionListContainer"></div>
+  </div>
+
   <div id="loadingSpinner" class="loading-spinner" style="display: none;">
     <span></span>
   </div>
@@ -50,6 +60,7 @@ export class TodoItemComponent {
   private isInstructor: boolean = false;
   private selectCallback: (() => void) | null = null;
   private updateCallback: ((todo: Todo) => void) | null = null;
+  private questionList: QuestionListComponent | null = null;
 
   constructor() {
     this.container = null;
@@ -148,6 +159,19 @@ export class TodoItemComponent {
       }
     });
 
+    // Chat-Button Handler
+    const chatIconBtn = this.container.querySelector('#chatIconBtn');
+    chatIconBtn?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await this.toggleChatPopover();
+    });
+
+    // Popover-Close Handler
+    const chatPopoverClose = this.container.querySelector('#chatPopoverClose');
+    chatPopoverClose?.addEventListener('click', () => {
+      this.toggleChatPopover();
+    });
+
     const statusChangeBtn = this.container.querySelector('#statusChangeBtn');
     const statusMenu = this.container.querySelector('#statusMenu');
 
@@ -206,6 +230,30 @@ export class TodoItemComponent {
   }
 
   /**
+   * Toggelt das Chat-Popover
+   */
+  private async toggleChatPopover(): Promise<void> {
+    const chatPopover = this.container?.querySelector('#chatPopover') as HTMLElement;
+    if (!chatPopover) return;
+
+    const isVisible = chatPopover.style.display !== 'none';
+    
+    if (!isVisible) {
+      // Popover wird geöffnet - lade QuestionList
+      if (!this.questionList && this.todo) {
+        const questionListContainer = this.container?.querySelector('#questionListContainer');
+        if (questionListContainer) {
+          this.questionList = new QuestionListComponent();
+          await this.questionList.init('#questionListContainer');
+          await this.questionList.loadQuestions(this.todo.id);
+        }
+      }
+    }
+
+    chatPopover.style.display = isVisible ? 'none' : 'flex';
+  }
+
+  /**
    * Registriert einen Callback für Auswahl
    */
   onSelect(callback: () => void): void {
@@ -233,6 +281,10 @@ export class TodoItemComponent {
    * Vernichtet die Komponente
    */
   destroy(): void {
+    if (this.questionList) {
+      this.questionList.destroy();
+      this.questionList = null;
+    }
     if (this.container) {
       this.container.innerHTML = '';
     }
