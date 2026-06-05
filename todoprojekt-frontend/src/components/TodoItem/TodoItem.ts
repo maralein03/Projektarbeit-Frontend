@@ -239,6 +239,13 @@ export class TodoItemComponent {
     const isVisible = chatPopover.style.display !== 'none';
     
     if (!isVisible) {
+      // Schließe alle anderen Popovers
+      document.querySelectorAll('.chat-popover').forEach((popover) => {
+        if (popover !== chatPopover) {
+          popover.style.display = 'none';
+        }
+      });
+
       // Popover wird geöffnet - lade QuestionList
       if (!this.questionList && this.todo) {
         const questionListContainer = this.container?.querySelector('#questionListContainer');
