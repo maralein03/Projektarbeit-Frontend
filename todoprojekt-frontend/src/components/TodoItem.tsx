@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  Box, 
+  Chip, 
+  Button, 
+  CircularProgress 
+} from '@mui/material';
+import { 
+  PlayArrow as PlayIcon, 
+  CheckCircle as CheckIcon, 
+  AssignmentTurnedIn as AcceptIcon,
+  RestartAlt as ResetIcon,
+  Edit as EditIcon 
+} from '@mui/icons-material';
 import { Todo, TodoStatus } from '../types';
 import { todoService } from '../services/todoService';
-
 
 interface TodoItemProps {
   todo: Todo;
@@ -44,81 +59,163 @@ export const TodoItem: React.FC<TodoItemProps> = ({
     }
   };
 
-  const getStatusColor = (status: TodoStatus) => {
-    const colors: Record<TodoStatus, string> = {
-      OPEN: '#ff6b6b',
-      IN_PROGRESS: '#ffd93d',
-      DONE: '#6bcf7f',
-      ACCEPTED: '#4d96ff',
+  const getStatusColor = (status: TodoStatus): "error" | "warning" | "success" | "primary" | "default" => {
+    const colors: Record<TodoStatus, "error" | "warning" | "success" | "primary"> = {
+      OPEN: 'error',
+      IN_PROGRESS: 'warning',
+      DONE: 'success',
+      ACCEPTED: 'primary',
     };
-    return colors[status] || '#999';
+    return colors[status] || 'default';
   };
 
   return (
-    <div className="todo-item">
-      <div className="todo-header">
-        <h3 onClick={() => onSelect(todo)} className="todo-title">
-          {todo.title}
-        </h3>
-        <span
-          className="todo-status"
-          style={{ backgroundColor: getStatusColor(todo.status) }}
+    <Card 
+      sx={{ 
+        marginBottom: 2, 
+        boxShadow: 2, 
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: 4,
+        }
+      }}
+    >
+      <CardContent>
+        {/* Header: Titel und Status-Badge */}
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'flex-start', 
+            marginBottom: 2 
+          }}
         >
-          {todo.status}
-        </span>
-      </div>
-      <p className="todo-description">{todo.description}</p>
-      <div className="todo-meta">
-        <span>Zugewiesen an: <strong>{todo.assignedTo}</strong></span>
-        <span>Erstellt: {new Date(todo.createdAt).toLocaleDateString('de-DE')}</span>
-      </div>
+          <Typography 
+            variant="h6" 
+            component="h3" 
+            onClick={() => onSelect(todo)}
+            sx={{ 
+              cursor: 'pointer', 
+              fontWeight: 600,
+              '&:hover': { color: 'primary.main', textDecoration: 'underline' } 
+            }}
+          >
+            {todo.title}
+          </Typography>
+          <Chip 
+            label={todo.status} 
+            color={getStatusColor(todo.status)} 
+            size="small" 
+            sx={{ fontWeight: 'bold' }}
+          />
+        </Box>
 
-      <div className="todo-actions">
-        {!isInstructor && (
-          <>
-            <button
-              onClick={() => handleStatusChange('IN_PROGRESS')}
-              disabled={isUpdatingStatus || todo.status === 'DONE'}
-              className="btn-secondary"
-            >
-              In Bearbeitung
-            </button>
-            <button
-              onClick={() => handleStatusChange('DONE')}
-              disabled={isUpdatingStatus}
-              className="btn-secondary"
-            >
-              Erledigt
-            </button>
-            <button
-              onClick={handleAccept}
-              disabled={isUpdatingStatus || todo.status !== 'DONE'}
-              className="btn-primary"
-            >
-              Annehmen
-            </button>
-          </>
-        )}
-        {isInstructor && (
-          <>
-            <button
-              onClick={() => handleStatusChange('OPEN')}
-              disabled={isUpdatingStatus}
-              className="btn-secondary"
-            >
-              Zurücksetzen
-            </button>
-            <button
-              onClick={() => onSelect(todo)}
-              className="btn-primary"
-            >
-              Bearbeiten
-            </button>
-          </>
-        )}
-      </div>
-    </div>
+        {/* Beschreibung */}
+        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 2, wordBreak: 'break-word' }}>
+          {todo.description}
+        </Typography>
+
+        {/* Metadaten (Zuweisung & Datum) */}
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            flexWrap: 'wrap', 
+            gap: 1, 
+            marginBottom: 2.5 
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            Zugewiesen an: <strong>{todo.assignedTo}</strong>
+          </Typography>
+          <Typography variant="caption" color="text.disabled">
+            Erstellt: {new Date(todo.createdAt).toLocaleDateString('de-DE')}
+          </Typography>
+        </Box>
+
+        {/* Trennlinie & Buttons */}
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            gap: 1, 
+            justifyContent: 'flex-start', 
+            flexWrap: 'wrap', 
+            paddingTop: 1.5, 
+            borderTop: '1px solid', 
+            borderColor: 'divider' 
+          }}
+        >
+          {isUpdatingStatus ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', paddingTop: 0.5, paddingLeft: 1 }}>
+              <CircularProgress size={24} sx={{ marginRight: 1 }} />
+              <Typography variant="caption">Aktualisiere...</Typography>
+            </Box>
+          ) : (
+            <>
+              {/* LERNENDER BUTTONS */}
+              {!isInstructor && (
+                <>
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    size="small"
+                    startIcon={<PlayIcon />}
+                    onClick={() => handleStatusChange('IN_PROGRESS')}
+                    disabled={todo.status === 'DONE' || todo.status === 'ACCEPTED'}
+                  >
+                    In Bearbeitung
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    size="small"
+                    startIcon={<CheckIcon />}
+                    onClick={() => handleStatusChange('DONE')}
+                    disabled={todo.status === 'DONE' || todo.status === 'ACCEPTED'}
+                  >
+                    Erledigt
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<AcceptIcon />}
+                    onClick={handleAccept}
+                    disabled={todo.status !== 'DONE'}
+                  >
+                    Annehmen
+                  </Button>
+                </>
+              )}
+
+              {/* AUSBILDER BUTTONS */}
+              {isInstructor && (
+                <>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="small"
+                    startIcon={<ResetIcon />}
+                    onClick={() => handleStatusChange('OPEN')}
+                  >
+                    Zurücksetzen
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<EditIcon />}
+                    onClick={() => onSelect(todo)}
+                  >
+                    Bearbeiten
+                  </Button>
+                </>
+              )}
+            </>
+          )}
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
-
-
