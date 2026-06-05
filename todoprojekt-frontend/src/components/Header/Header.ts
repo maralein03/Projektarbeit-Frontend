@@ -20,6 +20,7 @@ const TEMPLATE = `
 
   <!-- Rechte Seite: Profil & Logout -->
   <div class="header-right">
+    <button class="btn-new-todo" id="newTodoBtn">➕ Neue Todo erstellen</button>
     <span class="username" id="username">-</span>
     <span class="role-badge" id="roleBadge">🧑‍🎓 Lernender</span>
     <button class="btn-logout" id="logoutBtn">Logout</button>
@@ -31,6 +32,7 @@ export class HeaderComponent {
   private container: HTMLElement | null;
   private filterChangeCallback: ((filter: FilterType) => void) | null = null;
   private logoutCallback: (() => void) | null = null;
+  private newTodoCallback: (() => void) | null = null;
   private activeFilter: FilterType = 'ALL';
 
   constructor() {
@@ -61,6 +63,16 @@ export class HeaderComponent {
    */
   private bindEvents(): void {
     if (!this.container) return;
+
+    // New Todo Button
+    const newTodoBtn = this.container.querySelector('#newTodoBtn');
+    if (newTodoBtn) {
+      newTodoBtn.addEventListener('click', () => {
+        if (this.newTodoCallback) {
+          this.newTodoCallback();
+        }
+      });
+    }
 
     // Filter-Buttons
     const filterButtons = this.container.querySelectorAll('.filter-btn');
@@ -140,6 +152,13 @@ export class HeaderComponent {
    */
   onLogout(callback: () => void): void {
     this.logoutCallback = callback;
+  }
+
+  /**
+   * Registriert einen Callback für "New Todo" Button
+   */
+  onNewTodo(callback: () => void): void {
+    this.newTodoCallback = callback;
   }
 
   /**

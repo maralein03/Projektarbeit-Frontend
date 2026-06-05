@@ -74,10 +74,20 @@ async function initializeUI(username: string, isInstructor: boolean): Promise<vo
     authContext.performLogout();
     location.reload();
   });
+  headerComponent.onNewTodo(() => {
+    console.log('New Todo button clicked');
+    console.log('todoFormComponent exists:', !!todoFormComponent);
+    if (todoFormComponent) {
+      console.log('Resetting form');
+      todoFormComponent.reset();
+      console.log('Showing modal');
+      todoFormComponent.show();
+    }
+  });
 
   // TodoForm laden
   todoFormComponent = new TodoFormComponent();
-  await todoFormComponent.init('#todoForm');
+  await todoFormComponent.init('#todoFormModal');
   todoFormComponent.onSubmit(async (data) => {
     try {
       if (todoFormComponent?.getIsNew()) {
