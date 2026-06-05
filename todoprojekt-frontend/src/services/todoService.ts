@@ -56,10 +56,12 @@ export const todoService = {
     }
   },
 
-  // Change todo status
+  // Change todo status (GEÄNDERT: Übergabe als Query-Parameter)
   updateTodoStatus: async (id: number, status: TodoStatus): Promise<Todo> => {
     try {
-      const response = await apiClient.patch(`/todos/${id}/status`, { status });
+      // Vorher: const response = await apiClient.patch(`/todos/${id}/status`, { status });
+      // Jetzt: Der Status wird direkt an die URL angehängt (?status=...)
+      const response = await apiClient.patch(`/todos/${id}/status?status=${status}`);
       return response.data;
     } catch (error) {
       console.error(`Error updating todo status ${id}:`, error);
