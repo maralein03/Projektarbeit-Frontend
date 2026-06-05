@@ -1,0 +1,198 @@
+.todo-item-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.todo-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.todo-title {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.todo-title:hover {
+  color: #0066cc;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.status-badge.open {
+  background-color: #fee;
+  color: #c33;
+}
+
+.status-badge.in-progress {
+  background-color: #fde;
+  color: #963;
+}
+
+.status-badge.done {
+  background-color: #efe;
+  color: #363;
+}
+
+.status-badge.accepted {
+  background-color: #e8f4f8;
+  color: #036;
+}
+
+.card-body {
+  margin-bottom: 12px;
+}
+
+.todo-description {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.todo-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.meta-item {
+  display: flex;
+  gap: 4px;
+}
+
+.meta-item strong {
+  color: #666;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  background-color: #f8f9fa;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-action:hover {
+  background-color: #e9ecef;
+  border-color: #bbb;
+}
+
+.btn-select {
+  flex: 1;
+}
+
+.btn-status {
+  background-color: #0066cc;
+  color: #fff;
+  border-color: #0066cc;
+}
+
+.btn-status:hover {
+  background-color: #0052a3;
+  border-color: #0052a3;
+}
+
+.status-menu {
+  position: absolute;
+  top: 100%;
+  right: 16px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  min-width: 140px;
+  margin-top: 4px;
+}
+
+.status-option {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background-color: transparent;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.status-option:hover {
+  background-color: #f0f0f0;
+}
+
+.status-option:first-child {
+  border-radius: 4px 4px 0 0;
+}
+
+.status-option:last-child {
+  border-radius: 0 0 4px 4px;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-spinner span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #0066cc;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}

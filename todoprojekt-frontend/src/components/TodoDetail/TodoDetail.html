@@ -1,0 +1,36 @@
+<div class="todo-detail-overlay" id="todoDetailOverlay">
+  <div class="todo-detail-modal">
+    <div class="modal-header">
+      <h2 id="detailTitle">-</h2>
+      <button class="close-btn" id="closeBtn">✕</button>
+    </div>
+
+    <div class="modal-content">
+      <div class="todo-detail-section">
+        <h3>Aufgabendetails</h3>
+        <div class="detail-row">
+          <label>Status:</label>
+          <span class="status-badge" id="detailStatus">OPEN</span>
+        </div>
+        <div class="detail-row">
+          <label>Zugewiesen an:</label>
+          <span id="detailAssignedTo">-</span>
+        </div>
+        <div class="detail-row">
+          <label>Erstellt am:</label>
+          <span id="detailCreatedAt">-</span>
+        </div>
+        <div class="detail-row full-width">
+          <label>Beschreibung:</label>
+          <p class="description" id="detailDescription">-</p>
+        </div>
+      </div>
+
+      <div id="questionListContainer"></div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" id="closeBtn2">Schließen</button>
+    </div>
+  </div>
+</div>

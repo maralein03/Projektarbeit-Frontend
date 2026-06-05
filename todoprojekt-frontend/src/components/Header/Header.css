@@ -1,0 +1,86 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background-color: #0066cc;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-left h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 6px;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  border-radius: 24px;
+}
+
+.filter-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+  background-color: #fff;
+  color: #0066cc;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.username {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.role-badge {
+  background-color: rgba(255, 255, 255, 0.18);
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.btn-logout {
+  padding: 6px 14px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: background-color 0.15s;
+}
+
+.btn-logout:hover {
+  background-color: #e63939;
+}

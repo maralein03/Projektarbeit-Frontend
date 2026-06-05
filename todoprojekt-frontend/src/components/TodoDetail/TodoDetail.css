@@ -1,0 +1,160 @@
+.todo-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.todo-detail-modal {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 1.4rem;
+  flex: 1;
+}
+
+.close-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.modal-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.todo-detail-section {
+  margin-bottom: 24px;
+}
+
+.todo-detail-section h3 {
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.detail-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.detail-row.full-width {
+  flex-direction: column;
+}
+
+.detail-row label {
+  font-weight: 600;
+  color: #4a5568;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.detail-row span {
+  color: #1a1a1a;
+}
+
+.description {
+  margin: 0;
+  line-height: 1.6;
+  color: #666;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.status-badge.open {
+  background-color: #fee;
+  color: #c33;
+}
+
+.status-badge.in-progress {
+  background-color: #fde;
+  color: #963;
+}
+
+.status-badge.done {
+  background-color: #efe;
+  color: #363;
+}
+
+.status-badge.accepted {
+  background-color: #e8f4f8;
+  color: #036;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-secondary {
+  padding: 10px 18px;
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.15s;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+}
