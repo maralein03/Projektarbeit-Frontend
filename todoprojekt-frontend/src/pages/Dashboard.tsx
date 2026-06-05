@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import { useTodos } from '../hooks/useTodos';
 import { useAuth } from '../context/AuthContext';
 import { Header } from '../components/Header';
@@ -6,7 +6,6 @@ import { TodoList } from '../components/TodoList';
 import { TodoForm } from '../components/TodoForm';
 import { TodoDetail } from '../components/TodoDetail';
 import { Todo } from '../types';
-import '../styles/Dashboard.css';
 
 export const Dashboard: React.FC = () => {
   const { user, hasRole } = useAuth();
@@ -16,29 +15,43 @@ export const Dashboard: React.FC = () => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isNewTodo, setIsNewTodo] = useState(false);
 
+  // Rolle prüfen (Ausbilder)
   const isInstructor = hasRole('ROLE_UPDATE');
 
-  const handleSelectTodo = (todo) => {
+  // Aufgabe auswählen -> Detail-Ansicht öffnen
+  const handleSelectTodo = (todo: Todo) => {
     setSelectedTodo(todo);
     setIsDetailOpen(true);
   };
 
+  // Neues Todo erstellen (Formular als "Neu" öffnen)
   const handleOpenNewTodoForm = () => {
     setSelectedTodo(null);
     setIsNewTodo(true);
     setIsFormOpen(true);
   };
 
-  const handleFormSubmit = async (todo) => {
+  // Falls du später eine bestehende Aufgabe bearbeiten willst:
+  const handleOpenEditTodoForm = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setIsNewTodo(false);
+    setIsFormOpen(true);
+  };
+
+  // Nach dem Erstellen/Bearbeiten: Liste neu laden
+  const handleFormSubmit = async () => {
     await fetchTodos();
     setIsFormOpen(false);
     setIsNewTodo(false);
+    setSelectedTodo(null); // Reset nach Erfolg
   };
 
-  const handleTodoUpdate = async (todo) => {
+  // Wenn sich der Status im List-Eintrag direkt ändert
+  const handleTodoUpdate = async (updatedTodo: Todo) => {
     await fetchTodos();
-    if (selectedTodo?.id === todo.id) {
-      setSelectedTodo(todo);
+    // Falls das gerade geöffnete Detail-Fenster betroffen ist, State synchronisieren
+    if (selectedTodo?.id === updatedTodo.id) {
+      setSelectedTodo(updatedTodo);
     }
   };
 
@@ -83,6 +96,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </main>
 
+      {/* Detail-Ansicht (Modal oder Sidebar) */}
       {isDetailOpen && selectedTodo && (
         <TodoDetail
           todo={selectedTodo}
@@ -91,6 +105,7 @@ export const Dashboard: React.FC = () => {
         />
       )}
 
+      {/* Formular-Modal für Erstellen/Bearbeiten */}
       {isFormOpen && (
         <div className="modal-overlay">
           <div className="modal-container">
