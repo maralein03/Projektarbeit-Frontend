@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "setup:keycloak": "node scripts/setup-keycloak.mjs",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@types/node": "^25.9.1",
@@ -21,10 +23,11 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@vitejs/plugin-react": "^6.0.1",
-    "@vitest/ui": "^1.0.4",
     "@vitest/coverage-v8": "^1.0.4",
+    "@vitest/ui": "^1.0.4",
     "eslint": "^10.3.0",
     "globals": "^17.6.0",
+    "happy-dom": "^20.10.2",
     "vite": "^8.0.12",
     "vitest": "^1.0.4"
   }

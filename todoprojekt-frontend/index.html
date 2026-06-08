@@ -5,23 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo App</title>
+    <!-- Material Design Icons & Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-200..200" rel="stylesheet" />
+    <style>
+      html, body { height: 100%; }
+      body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+    </style>
   </head>
   <body>
     <div id="app">
-      <!-- Header -->
-      <div id="header"></div>
-
-      <!-- Main Content -->
-      <main style="display: flex; height: calc(100vh - 60px);">
-        <!-- Todo List (full width) -->
-        <div style="flex: 1; overflow-y: auto;">
-          <div id="todoList"></div>
-        </div>
-      </main>
-
-      <!-- Modals -->
-      <div id="todoFormModal" style="display: none;"></div>
-      <div id="todoDetail"></div>
+      <!-- Router content will be rendered here -->
     </div>
 
     <script type="module" src="/src/main.ts"></script>

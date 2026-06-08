@@ -31,14 +31,14 @@ class AuthService {
       const authenticated = await initKeycloak();
 
       if (authenticated) {
-        const userInfo = getUserInfo();
+        const userInfo = await getUserInfo();
         const keycloak = getKeycloak();
 
         this.user = {
-          username: userInfo.username,
-          email: userInfo.email,
-          roles: userInfo.roles,
-          token: keycloak.token || '',
+          username: userInfo?.username || 'Developer',
+          email: userInfo?.email || 'dev@localhost',
+          roles: userInfo?.roles || ['UPDATE'],
+          token: keycloak?.token || userInfo?.token || 'token',
         };
         this.isAuthenticated = true;
         this.error = null;

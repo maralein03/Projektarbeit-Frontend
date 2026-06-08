@@ -3,9 +3,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-  background-color: #0066cc;
+  background: linear-gradient(135deg, #0066cc 0%, #0047a3 100%);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -14,7 +14,14 @@
 .header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.header-icon {
+  font-size: 32px !important;
+  color: #fff;
+  font-weight: 500;
 }
 
 .header-left h2 {
@@ -26,27 +33,42 @@
 
 .filter-buttons {
   display: flex;
-  gap: 6px;
-  background-color: rgba(0, 0, 0, 0.15);
-  padding: 4px;
+  gap: 4px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 6px;
   border-radius: 24px;
+  flex: 1;
+  justify-content: center;
 }
 
 .filter-btn {
-  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
   border-radius: 20px;
   border: none;
   cursor: pointer;
   background-color: transparent;
   color: #fff;
-  font-weight: 600;
-  font-size: 0.88rem;
+  font-weight: 500;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
+}
+
+.filter-btn .material-icons {
+  font-size: 20px !important;
+}
+
+.filter-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .filter-btn.active {
   background-color: #fff;
   color: #0066cc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .header-right {
@@ -78,24 +100,54 @@
 }
 
 .role-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   background-color: rgba(255, 255, 255, 0.18);
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 0.82rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.3px;
+  backdrop-filter: blur(4px);
 }
 
-.btn-logout {
-  padding: 6px 14px;
-  background-color: #ff4d4d;
-  color: #fff;
-  border: none;
+.role-badge .material-icons {
+  font-size: 18px !important;
+}
+
+.mat-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
   border-radius: 6px;
+  border: none;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.88rem;
-  transition: background-color 0.15s;
+  transition: all 0.15s;
+}
+
+.btn-logout {
+  background-color: #ff4d4d;
+  color: #fff;
+  padding: 8px 14px;
+}
+
+.btn-logout .material-icons {
+  font-size: 20px !important;
+}
+
+.btn-logout:hover {
+  background-color: #ff3333;
+  box-shadow: 0 2px 8px rgba(255, 77, 77, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-logout:active {
+  transform: translateY(0);
 }
 
 .btn-logout:hover {

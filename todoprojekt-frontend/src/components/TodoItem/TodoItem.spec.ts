@@ -52,16 +52,16 @@ describe('TodoItemComponent', () => {
     await component.init('#test-item');
     component.setData(mockTodo, true);
 
-    const statusBtn = container.querySelector('#statusBtn');
-    expect(statusBtn?.style.display).not.toBe('none');
+    const statusContainer = container.querySelector('#statusContainer') as HTMLElement;
+    expect(statusContainer?.style.display).not.toBe('none');
   });
 
   it('should hide status button for non-instructors', async () => {
     await component.init('#test-item');
     component.setData(mockTodo, false);
 
-    const statusBtn = container.querySelector('#statusBtn');
-    expect(statusBtn?.style.display).toBe('none');
+    const statusContainer = container.querySelector('#statusContainer') as HTMLElement;
+    expect(statusContainer?.style.display).toBe('none');
   });
 
   it('should trigger select callback', async () => {
