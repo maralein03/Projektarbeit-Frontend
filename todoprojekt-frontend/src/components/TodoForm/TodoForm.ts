@@ -252,7 +252,7 @@ export class TodoFormComponent {
     const descriptionInput = this.form?.querySelector('#descriptionInput') as HTMLTextAreaElement;
     const assignedToInput = this.form?.querySelector('#assignedToInput') as HTMLInputElement;
     const statusSelect = this.form?.querySelector('#statusSelect') as HTMLSelectElement;
-    const formTitle = this.form?.querySelector('#formTitle');
+    const formTitle = this.modal?.querySelector('#formTitle');
 
     if (titleInput) titleInput.value = todo.title || '';
     if (descriptionInput) descriptionInput.value = todo.description || '';
@@ -272,7 +272,7 @@ export class TodoFormComponent {
     this.currentTodo = null;
     this.isNew = true;
 
-    const formTitle = this.form?.querySelector('#formTitle');
+    const formTitle = this.modal?.querySelector('#formTitle');
     if (formTitle) {
       formTitle.textContent = '✨ Neue Todo erstellen';
     }

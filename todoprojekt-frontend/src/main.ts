@@ -1,9 +1,6 @@
 import './styles/globals.css';
 import './index.css';
 
-// Material Design Styles
-import '@angular/material/prebuilt-themes/indigo-pink.css';
-
 // Import all CSS
 import './components/Header/Header.css';
 import './components/TodoForm/TodoForm.css';
@@ -16,6 +13,8 @@ import { router } from './services/router';
 import { authContext } from './context/AuthContext';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { AdminPanel } from './pages/AdminPanel';
+import { SettingsPage } from './pages/SettingsPage';
 
 /**
  * Initialisiert die komplette Anwendung mit Routing
@@ -43,6 +42,29 @@ async function initApp(): Promise<void> {
       layout: 'with-header',
     });
 
+    // Admin Panel Route (nur für UPDATE-Rolle)
+    router.register({
+      path: '/admin',
+      name: 'Admin Panel',
+      component: async () => {
+        const admin = new AdminPanel();
+        await admin.render();
+      },
+      requiredRoles: ['UPDATE'],
+      layout: 'with-header',
+    });
+
+    // Settings Route
+    router.register({
+      path: '/settings',
+      name: 'Einstellungen',
+      component: async () => {
+        const settings = new SettingsPage();
+        await settings.render();
+      },
+      layout: 'with-header',
+    });
+
     // Default route
     router.register({
       path: '/',
@@ -66,7 +88,7 @@ async function initApp(): Promise<void> {
     try {
       const initialState = authContext.getState();
       if (initialState.isAuthenticated) {
-        router.setAuth(true, initialState.roles || []);
+        router.setAuth(true, initialState.user?.roles || []);
         router.navigate('/dashboard');
       } else {
         router.navigate('/login');

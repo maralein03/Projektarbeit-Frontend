@@ -1,4 +1,4 @@
-import { Todo } from '../types';
+
 
 export interface RouteConfig {
   path: string;

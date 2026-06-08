@@ -25,6 +25,16 @@ export class DashboardPage {
 
     if (!headerContainer || !contentContainer) return;
 
+    // Create dashboard HTML structure
+    contentContainer.innerHTML = `
+      <div style="display: flex; flex-direction: column; height: 100%;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 20px; overflow-y: auto; flex: 1;">
+          <div id="todoList"></div>
+          <div style="overflow-y: auto;"></div>
+        </div>
+      </div>
+    `;
+
     try {
       const state = authContext.getState();
 

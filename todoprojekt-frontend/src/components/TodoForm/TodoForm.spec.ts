@@ -1,6 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { TodoFormComponent, TodoFormData } from './TodoForm';
+import { TodoFormComponent } from './TodoForm';
 import { Todo } from '../../types';
+
+// Mock alert
+window.alert = vi.fn();
 
 describe('TodoFormComponent', () => {
   let component: TodoFormComponent;

@@ -48,6 +48,8 @@ describe('TodoListComponent', () => {
     await component.init('#test-list');
     component.setTodos(mockTodos);
 
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     const items = container.querySelectorAll('.todo-item-card');
     expect(items.length).toBe(2);
   });

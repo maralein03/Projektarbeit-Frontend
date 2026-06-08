@@ -1,5 +1,6 @@
 import { authContext } from '../context/AuthContext';
 import { router } from '../services/router';
+import { loginWithKeycloak } from '../services/keycloak';
 
 const TEMPLATE = `
   <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);">
@@ -32,7 +33,7 @@ const TEMPLATE = `
           gap: 8px;
         ">
           <span class="material-icons">vpn_key</span>
-          Anmelden
+          Mit Keycloak anmelden
         </button>
 
         <p style="text-align: center; color: #757575; font-size: 12px; margin: 0; font-family: Roboto, sans-serif;">
@@ -56,7 +57,7 @@ export class LoginPage {
     if (!container) return;
 
     container.innerHTML = TEMPLATE;
-    this.bindEvents();
+    LoginPage.bindEvents();
 
     // Check if already authenticated
     if (authContext.getState().isAuthenticated) {
@@ -69,11 +70,15 @@ export class LoginPage {
    */
   private static bindEvents(): void {
     const loginBtn = document.getElementById('login-btn');
-    loginBtn?.addEventListener('click', () => this.handleLogin());
+    if (loginBtn) {
+      loginBtn.addEventListener('click', async () => {
+        await LoginPage.handleLogin();
+      });
+    }
   }
 
   /**
-   * Verarbeitet Login
+   * Verarbeitet Login zu Keycloak
    */
   private static async handleLogin(): Promise<void> {
     const loadingContainer = document.getElementById('loading-container');
@@ -85,26 +90,34 @@ export class LoginPage {
     if (errorContainer) errorContainer.style.display = 'none';
 
     try {
+      console.log('🔐 Redirecting to Keycloak login...');
+      await loginWithKeycloak();
+      
+      // Nach erfolgreichem Login: Aktualisiere AuthContext
+      console.log('✅ Login erfolgreich, aktualisiere AuthContext...');
       await authContext.init();
-
+      
+      // Hole den aktualisierten State
       const state = authContext.getState();
-      if (state.isAuthenticated) {
-        // Update router auth state
-        router.setAuth(true, state.roles || []);
-
-        // Navigate to dashboard
-        router.navigate('/dashboard');
-      } else {
-        throw new Error('Authentifizierung fehlgeschlagen');
-      }
+      console.log('✅ Updated auth state:', {isAuthenticated: state.isAuthenticated, roles: state.user?.roles});
+      
+      // Aktualisiere den Router mit dem neuen Auth-Status
+      router.setAuth(state.isAuthenticated, state.user?.roles || []);
+      
+      // Navigiere zum Dashboard - setze Hash direkt
+      console.log('📍 Setting hash to #/dashboard...');
+      window.location.hash = '#/dashboard';
     } catch (error) {
+      console.error('❌ Login failed:', error);
+      
       if (loadingContainer) loadingContainer.style.display = 'none';
       if (loginContainer) loginContainer.style.display = 'flex';
       if (errorContainer) errorContainer.style.display = 'block';
 
       const errorMessage = document.getElementById('error-message');
       if (errorMessage) {
-        errorMessage.textContent = error instanceof Error ? error.message : 'Login fehlgeschlagen';
+        const errorText = error instanceof Error ? error.message : 'Login fehlgeschlagen';
+        errorMessage.textContent = errorText;
       }
     }
   }
