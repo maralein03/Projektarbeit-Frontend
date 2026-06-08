@@ -1,22 +1,44 @@
 <header class="app-header">
   <!-- Linke Seite: Logo / Titel -->
   <div class="header-left">
-    <h2>📝 Todo App</h2>
+    <span class="material-icons header-icon">task_alt</span>
+    <h2>Todo App</h2>
   </div>
 
-  <!-- Mitte: Filter-Buttons -->
+  <!-- Mitte: Filter-Buttons (Material Style) -->
   <div class="filter-buttons">
-    <button class="filter-btn filter-btn--all" data-filter="ALL">Alle</button>
-    <button class="filter-btn" data-filter="OPEN">Open</button>
-    <button class="filter-btn" data-filter="IN_PROGRESS">In Progress</button>
-    <button class="filter-btn" data-filter="DONE">Done</button>
-    <button class="filter-btn" data-filter="ACCEPTED">Accepted</button>
+    <button class="filter-btn filter-btn--all mat-button" data-filter="ALL">
+      <span class="material-icons">filter_list</span>
+      Alle
+    </button>
+    <button class="filter-btn mat-button" data-filter="OPEN">
+      <span class="material-icons">schedule</span>
+      Open
+    </button>
+    <button class="filter-btn mat-button" data-filter="IN_PROGRESS">
+      <span class="material-icons">progress_activity</span>
+      In Progress
+    </button>
+    <button class="filter-btn mat-button" data-filter="DONE">
+      <span class="material-icons">check_circle</span>
+      Done
+    </button>
+    <button class="filter-btn mat-button" data-filter="ACCEPTED">
+      <span class="material-icons">verified</span>
+      Accepted
+    </button>
   </div>
 
   <!-- Rechte Seite: Profil & Logout -->
   <div class="header-right">
     <span class="username" id="username">-</span>
-    <span class="role-badge" id="roleBadge">🧑‍🎓 Lernender</span>
-    <button class="btn-logout" id="logoutBtn">Logout</button>
+    <span class="role-badge" id="roleBadge">
+      <span class="material-icons">school</span>
+      Lernender
+    </span>
+    <button class="btn-logout mat-button" id="logoutBtn">
+      <span class="material-icons">logout</span>
+      Logout
+    </button>
   </div>
 </header>

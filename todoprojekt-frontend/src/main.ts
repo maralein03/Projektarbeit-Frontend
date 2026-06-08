@@ -1,5 +1,9 @@
 import './styles/globals.css';
 import './index.css';
+
+// Material Design Styles
+import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 import { HeaderComponent } from './components/Header/Header';
 import { TodoFormComponent } from './components/TodoForm/TodoForm';
 import { TodoListComponent } from './components/TodoList/TodoList';
