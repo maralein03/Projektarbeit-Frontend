@@ -1,0 +1,38 @@
+﻿<div class="questions-container">
+  <h2>Fragen zu dieser Aufgabe</h2>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div class="add-question">
+    <textarea
+      [(ngModel)]="newQuestion"
+      placeholder="Geben Sie eine neue Frage ein..."
+      rows="3"
+      class="question-input"
+    ></textarea>
+    <button
+      (click)="addQuestion()"
+      [disabled]="submitting"
+      class="btn btn-primary"
+    >
+      {{ submitting ? 'Wird hinzugefügt...' : 'Frage hinzufügen' }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Laden...</div>
+
+  <div *ngIf="!loading && questions.length === 0" class="no-questions">
+    Keine Fragen vorhanden
+  </div>
+
+  <div *ngIf="!loading && questions.length > 0" class="questions-list">
+    <div *ngFor="let question of questions" class="question-card">
+      <div class="question-header">
+        <strong>{{ question.author }}</strong>
+        <span class="question-date">{{ question.createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
+      </div>
+      <p class="question-content">{{ question.content }}</p>
+      <div *ngIf="question.resolved" class="resolved-badge">✓ Gelöst</div>
+    </div>
+  </div>
+</div>

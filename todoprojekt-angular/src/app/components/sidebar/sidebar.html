@@ -1,0 +1,20 @@
+﻿<aside class="sidebar" [class.open]="isOpen">
+  <div class="sidebar-header">
+    <h2>Navigation</h2>
+    <button (click)="toggleSidebar()" class="close-btn">×</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+      📊 Dashboard
+    </a>
+    <a routerLink="/todos" routerLinkActive="active" class="nav-item">
+      📋 Aufgaben
+    </a>
+    <a *ngIf="hasRole('ROLE_UPDATE')" routerLink="/todos/create" routerLinkActive="active" class="nav-item">
+      ✏️ Neue Aufgabe
+    </a>
+  </nav>
+</aside>
+
+<button *ngIf="!isOpen" (click)="toggleSidebar()" class="sidebar-toggle">☰</button>

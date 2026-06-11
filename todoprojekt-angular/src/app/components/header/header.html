@@ -1,0 +1,21 @@
+﻿<header class="app-header">
+  <div class="header-container">
+    <div class="logo">
+      <h1>TODO App</h1>
+    </div>
+
+    <nav class="nav-links">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/todos" routerLinkActive="active">Alle Aufgaben</a>
+      <a *ngIf="hasRole('ROLE_UPDATE')" routerLink="/todos/create" routerLinkActive="active">
+        Neue Aufgabe
+      </a>
+    </nav>
+
+    <div class="user-section">
+      <span class="username">{{ username }}</span>
+      <span class="user-role">{{ hasRole('ROLE_UPDATE') ? 'Ausbilder' : 'Lernender' }}</span>
+      <button (click)="logout()" class="btn-logout">Abmelden</button>
+    </div>
+  </div>
+</header>

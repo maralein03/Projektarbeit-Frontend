@@ -1,0 +1,11 @@
+﻿<div class="login-container">
+  <div class="login-box">
+    <h1>Todo App</h1>
+    <p *ngIf="isLoading" class="loading-message">
+      Wird zur Anmeldung weitergeleitet...
+    </p>
+    <p *ngIf="!isLoading" class="info-message">
+      Sie werden automatisch zum Keycloak-Login weitergeleitet.
+    </p>
+  </div>
+</div>

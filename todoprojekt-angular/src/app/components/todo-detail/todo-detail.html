@@ -1,0 +1,49 @@
+﻿<div class="todo-detail-container">
+  <a routerLink="/todos" class="back-link">← Zurück zur Liste</a>
+
+  <div *ngIf="loading" class="loading">Laden...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && todo" class="detail-card">
+    <div class="header">
+      <h1>{{ todo.title }}</h1>
+      <span class="status-badge" [class]="'status-' + todo.status.toLowerCase()">
+        {{ todo.status }}
+      </span>
+    </div>
+
+    <div class="content">
+      <div class="field">
+        <label>Beschreibung:</label>
+        <p>{{ todo.description }}</p>
+      </div>
+
+      <div class="field">
+        <label>Zugewiesen an:</label>
+        <p>{{ todo.assignedTo }}</p>
+      </div>
+
+      <div class="field">
+        <label>Erstellt am:</label>
+        <p>{{ todo.createdAt | date: 'dd.MM.yyyy HH:mm' }}</p>
+      </div>
+
+      <div class="field">
+        <label>Aktualisiert am:</label>
+        <p>{{ todo.updatedAt | date: 'dd.MM.yyyy HH:mm' }}</p>
+      </div>
+    </div>
+
+    <div class="questions-section">
+      <h2>Fragen ({{ questions.length }})</h2>
+      <div *ngIf="questions.length === 0" class="no-questions">
+        Keine Fragen vorhanden
+      </div>
+      <div *ngFor="let question of questions" class="question-item">
+        <p><strong>{{ question.author }}</strong> - {{ question.createdAt | date: 'dd.MM.yyyy HH:mm' }}</p>
+        <p>{{ question.content }}</p>
+        <span *ngIf="question.resolved" class="resolved">Gelöst</span>
+      </div>
+    </div>
+  </div>
+</div>

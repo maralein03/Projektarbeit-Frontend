@@ -1,0 +1,46 @@
+﻿<div class="todo-list-container">
+  <h2>Todo-Übersicht</h2>
+
+  <div class="filter-buttons">
+    <button [class.active]="filterStatus === 'ALL'" (click)="onFilterChange('ALL')" class="filter-btn">
+      Alle
+    </button>
+    <button [class.active]="filterStatus === 'OPEN'" (click)="onFilterChange('OPEN')" class="filter-btn">
+      Offen
+    </button>
+    <button [class.active]="filterStatus === 'IN_PROGRESS'" (click)="onFilterChange('IN_PROGRESS')" class="filter-btn">
+      In Bearbeitung
+    </button>
+    <button [class.active]="filterStatus === 'DONE'" (click)="onFilterChange('DONE')" class="filter-btn">
+      Abgeschlossen
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Laden...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div class="todos-table" *ngIf="!loading && filteredTodos.length > 0">
+    <div class="table-header">
+      <div class="col-title">Titel</div>
+      <div class="col-status">Status</div>
+      <div class="col-assigned">Zugewiesen an</div>
+      <div class="col-actions">Aktionen</div>
+    </div>
+    <div *ngFor="let todo of filteredTodos" class="table-row" [appHighlightStatus]="todo.status">
+      <div class="col-title">{{ todo.title }}</div>
+      <div class="col-status">
+        <span class="status-badge" [class]="'status-' + todo.status.toLowerCase()">
+          {{ todo.status }}
+        </span>
+      </div>
+      <div class="col-assigned">{{ todo.assignedTo }}</div>
+      <div class="col-actions">
+        <a [routerLink]="['/todos', todo.id]" class="btn-link">Details</a>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && filteredTodos.length === 0" class="no-todos">
+    Keine Todos gefunden
+  </div>
+</div>

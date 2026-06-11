@@ -3,7 +3,7 @@ import Keycloak from 'keycloak-js';
 const keycloakInstance = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080',
   realm: import.meta.env.VITE_KEYCLOAK_REALM || 'TODO',
-  clientId: 'todoprojekt-frontend', 
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'todoprojekt-frontend',
 });
 
 // Interne Variablen zur Absicherung gegen Mehrfach-Initialisierung
@@ -26,7 +26,8 @@ export const initKeycloak = async (): Promise<boolean> => {
     try {
       const authenticated = await keycloakInstance.init({
         onLoad: 'login-required',   
-        checkLoginIframe: false,   
+        checkLoginIframe: false,
+        redirectUri: window.location.origin + window.location.pathname,
       });
       isInitialized = true; // Erfolg merken!
       return authenticated;
