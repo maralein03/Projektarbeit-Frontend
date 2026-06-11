@@ -38,13 +38,17 @@ export class ChatService {
           m.sender !== currentUsername &&
           new Date(m.createdAt).getTime() > lastSeen
         );
+        console.log(`[Chat] todo=${todoId} msgs=${messages.length} lastSeen=${lastSeen} me="${currentUsername}" senders=[${messages.map(m=>m.sender).join(',')}] hasUnread=${hasUnread}`);
         const current = this.unreadTodos$.value;
+        const had = current.has(todoId);
         if (hasUnread) {
           current.add(todoId);
         } else {
           current.delete(todoId);
         }
-        this.unreadTodos$.next(new Set(current));
+        if (had !== hasUnread) {
+          this.unreadTodos$.next(new Set(current));
+        }
       }
     });
   }

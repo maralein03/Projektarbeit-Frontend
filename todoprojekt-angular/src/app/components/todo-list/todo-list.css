@@ -544,3 +544,14 @@ h2 {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.25); }
 }
+
+/* Delete button */
+.btn-delete {
+  background: #dc3545 !important;
+  color: white !important;
+  border-color: #dc3545 !important;
+}
+.btn-delete:hover {
+  background: #c82333 !important;
+  border-color: #c82333 !important;
+}
