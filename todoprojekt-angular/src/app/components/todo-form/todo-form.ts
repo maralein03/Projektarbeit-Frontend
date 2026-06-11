@@ -51,9 +51,10 @@ export class TodoForm implements OnInit {
       next: (_response: ApiResponse<any>) => {
         this.success = true;
         this.submitting = false;
-        setTimeout(() => {
-          this.router.navigate(['/todos']);
-        }, 1500);
+        const title = this.todoForm.get('title')?.value;
+        this.router.navigate(['/todos'], {
+          state: { toast: `Aufgabe "${title}" erfolgreich erstellt` }
+        });
       },
       error: (error) => {
         this.error = 'Failed to create todo';

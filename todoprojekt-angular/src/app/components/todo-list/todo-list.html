@@ -36,8 +36,9 @@
           <div class="card-footer">
             <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-progress" (click)="updateStatus(todo, 'IN_PROGRESS')">⏳ Bearbeitung</button>
             <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-done" (click)="updateStatus(todo, 'DONE')">✅ Erledigt</button>
-            <button matButton="elevated" matBadge="●" matBadgeColor="warn" matBadgeHidden="!unreadTodoIds.has(todo.id)" class="btn-chat" (click)="openChat(todo)">
+            <button class="btn-chat" (click)="openChat(todo)">
               💬 Chat
+              <span class="chat-notification" *ngIf="unreadTodoIds.has(todo.id)" title="Neue Nachricht">✉️</span>
             </button>
           </div>
         </div>
@@ -63,8 +64,9 @@
           <div class="card-footer">
             <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-open" (click)="updateStatus(todo, 'OPEN')">📌 Offen</button>
             <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-done" (click)="updateStatus(todo, 'DONE')">✅ Erledigt</button>
-            <button matButton="elevated" matBadge="●" matBadgeColor="warn" matBadgeHidden="!unreadTodoIds.has(todo.id)" class="btn-chat" (click)="openChat(todo)">
+            <button class="btn-chat" (click)="openChat(todo)">
               💬 Chat
+              <span class="chat-notification" *ngIf="unreadTodoIds.has(todo.id)" title="Neue Nachricht">✉️</span>
             </button>
           </div>
         </div>
@@ -90,8 +92,9 @@
           <div class="card-footer">
             <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-open" (click)="updateStatus(todo, 'OPEN')">📌 Offen</button>
             <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-progress" (click)="updateStatus(todo, 'IN_PROGRESS')">⏳ Bearbeitung</button>
-            <button matButton="elevated" matBadge="●" matBadgeColor="warn" matBadgeHidden="!unreadTodoIds.has(todo.id)" class="btn-chat" (click)="openChat(todo)">
+            <button class="btn-chat" (click)="openChat(todo)">
               💬 Chat
+              <span class="chat-notification" *ngIf="unreadTodoIds.has(todo.id)" title="Neue Nachricht">✉️</span>
             </button>
           </div>
         </div>
@@ -110,4 +113,9 @@
     [todoTitle]="activeChatTodo?.title ?? ''"
     (close)="closeChat()">
   </app-chat-modal>
+
+  <div *ngIf="toastMessage" class="toast" [class.toast-success]="toastType === 'success'" [class.toast-error]="toastType === 'error'">
+    <span class="toast-icon">{{ toastType === 'success' ? '✅' : '❌' }}</span>
+    <span class="toast-text">{{ toastMessage }}</span>
+  </div>
 </div>

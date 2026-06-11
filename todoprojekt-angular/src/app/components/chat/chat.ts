@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../services/chat';
@@ -26,7 +26,9 @@ export class Chat implements OnInit, OnDestroy {
 
   constructor(
     private chatService: ChatService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,10 @@ export class Chat implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
         if (user) {
-          this.currentUsername = user.username || user.preferred_username || user.name || '';
+          this.zone.run(() => {
+            this.currentUsername = user.username || user.preferred_username || user.name || '';
+            this.cdr.markForCheck();
+          });
         }
       });
   }
@@ -56,14 +61,19 @@ export class Chat implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (messages) => {
-          this.messages = messages || [];
-          this.loading = false;
-          // Auto-scroll to bottom
-          setTimeout(() => this.scrollToBottom(), 100);
+          this.zone.run(() => {
+            this.messages = messages || [];
+            this.loading = false;
+            this.cdr.markForCheck();
+            setTimeout(() => this.scrollToBottom(), 100);
+          });
         },
         error: (error) => {
           console.error('Error loading messages:', error);
-          this.loading = false;
+          this.zone.run(() => {
+            this.loading = false;
+            this.cdr.markForCheck();
+          });
         }
       });
   }
@@ -78,13 +88,15 @@ export class Chat implements OnInit, OnDestroy {
       .subscribe({
         next: (messages) => {
           const newMsgs = messages || [];
-          // Only update if count changed (avoid unnecessary re-render/scroll)
           if (newMsgs.length !== this.messages.length) {
-            const wasAtBottom = this.isScrolledToBottom();
-            this.messages = newMsgs;
-            if (wasAtBottom) {
-              setTimeout(() => this.scrollToBottom(), 50);
-            }
+            this.zone.run(() => {
+              const wasAtBottom = this.isScrolledToBottom();
+              this.messages = newMsgs;
+              this.cdr.markForCheck();
+              if (wasAtBottom) {
+                setTimeout(() => this.scrollToBottom(), 50);
+              }
+            });
           }
         },
         error: (err) => console.error('Polling error:', err)
@@ -96,20 +108,28 @@ export class Chat implements OnInit, OnDestroy {
       return;
     }
 
-    this.chatService.sendMessage(this.todoId, this.newMessage)
+    const textToSend = this.newMessage;
+    this.newMessage = '';
+
+    this.chatService.sendMessage(this.todoId, textToSend)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response: any) => {
-          // Backend returns ChatMessage directly
-          const msg = response.message && response.sender ? response : response.message;
-          if (msg) {
-            this.messages.push(msg);
-          }
-          this.newMessage = '';
-          setTimeout(() => this.scrollToBottom(), 100);
+          this.zone.run(() => {
+            const msg = response && response.sender ? response : response?.message;
+            if (msg) {
+              this.messages.push(msg);
+            }
+            this.cdr.markForCheck();
+            setTimeout(() => this.scrollToBottom(), 100);
+          });
         },
         error: (error) => {
           console.error('Error sending message:', error);
+          this.zone.run(() => {
+            this.newMessage = textToSend; // restore on failure
+            this.cdr.markForCheck();
+          });
           alert('Failed to send message');
         }
       });

@@ -497,3 +497,50 @@ h2 {
 .btn-status.btn-open { background: linear-gradient(135deg, #f57c00, #ef6c00); }
 .btn-status.btn-progress { background: linear-gradient(135deg, #fbc02d, #f9a825); color: #333; }
 .btn-status.btn-done { background: linear-gradient(135deg, #43a047, #388e3c); }
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  font-size: 15px;
+  font-weight: 600;
+  z-index: 9999;
+  animation: toast-slide-in 0.3s ease-out;
+  max-width: 420px;
+}
+.toast-success {
+  background: #28a745;
+  color: white;
+}
+.toast-error {
+  background: #dc3545;
+  color: white;
+}
+.toast-icon { font-size: 18px; }
+@keyframes toast-slide-in {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* Chat notification envelope */
+.btn-chat {
+  position: relative;
+}
+.chat-notification {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 16px;
+  animation: chat-pulse 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(220, 53, 69, 0.7));
+}
+@keyframes chat-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.25); }
+}
