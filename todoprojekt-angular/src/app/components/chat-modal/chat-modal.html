@@ -1,0 +1,12 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="close-btn" (click)="onClose()">✕</button>
+    </div>
+    <app-chat 
+      *ngIf="todoId && isOpen"
+      [todoId]="todoId"
+      [todoTitle]="todoTitle">
+    </app-chat>
+  </div>
+</div>

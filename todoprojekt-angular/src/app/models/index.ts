@@ -17,6 +17,14 @@ export interface Question {
   resolved: boolean;
 }
 
+export interface ChatMessage {
+  id: number;
+  todoId: number;
+  sender: string;
+  message: string;
+  createdAt: string;
+}
+
 export interface User {
   username: string;
   email: string;

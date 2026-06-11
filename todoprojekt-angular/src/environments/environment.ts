@@ -5,5 +5,5 @@ export const environment = {
     realm: 'TODO',
     clientId: 'todoprojekt-frontend'
   },
-  apiUrl: 'http://localhost:8081/api'
+  apiUrl: 'http://localhost:8082/api'
 };

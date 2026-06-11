@@ -1,24 +1,19 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
-
   return next(req).pipe(
     catchError((error) => {
       if (error.status === 401) {
-        // Unauthorized - redirect to login
-        router.navigate(['/login']);
+        // Token invalid/expired - reload so Keycloak re-authenticates
+        console.warn('401 received - reloading to trigger Keycloak login');
+        window.location.reload();
       } else if (error.status === 403) {
-        // Forbidden
         console.error('Access forbidden:', error);
       } else if (error.status >= 500) {
-        // Server error
         console.error('Server error:', error);
       }
-      throw error;
+      return throwError(() => error);
     })
   );
 };

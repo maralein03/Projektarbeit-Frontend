@@ -49,11 +49,28 @@ export class KeycloakService {
   }
 
   private loadUserProfile(): void {
-    this.keycloak.loadUserProfile().then((profile: any) => {
-      this.user$.next(profile);
-    }).catch((error: any) => {
-      console.error('Failed to load user profile:', error);
-    });
+    // First, try to get username from token
+    const tokenParsed = this.keycloak.tokenParsed as any;
+    if (tokenParsed?.preferred_username) {
+      const userProfile = {
+        id: tokenParsed.sub,
+        username: tokenParsed.preferred_username,
+        email: tokenParsed.email,
+        name: tokenParsed.name,
+        firstName: tokenParsed.given_name,
+        lastName: tokenParsed.family_name
+      };
+      this.user$.next(userProfile);
+      console.warn('User loaded from token:', userProfile);
+    } else {
+      // Fallback: load full profile
+      this.keycloak.loadUserProfile().then((profile: any) => {
+        this.user$.next(profile);
+        console.warn('User loaded from profile:', profile);
+      }).catch((error: any) => {
+        console.error('Failed to load user profile:', error);
+      });
+    }
   }
 
   public getToken(): string {

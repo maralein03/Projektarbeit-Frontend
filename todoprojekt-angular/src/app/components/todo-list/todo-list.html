@@ -1,46 +1,113 @@
 ﻿<div class="todo-list-container">
-  <h2>Todo-Übersicht</h2>
-
-  <div class="filter-buttons">
-    <button [class.active]="filterStatus === 'ALL'" (click)="onFilterChange('ALL')" class="filter-btn">
-      Alle
-    </button>
-    <button [class.active]="filterStatus === 'OPEN'" (click)="onFilterChange('OPEN')" class="filter-btn">
-      Offen
-    </button>
-    <button [class.active]="filterStatus === 'IN_PROGRESS'" (click)="onFilterChange('IN_PROGRESS')" class="filter-btn">
-      In Bearbeitung
-    </button>
-    <button [class.active]="filterStatus === 'DONE'" (click)="onFilterChange('DONE')" class="filter-btn">
-      Abgeschlossen
-    </button>
-  </div>
-
-  <div *ngIf="loading" class="loading">Laden...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
-
-  <div class="todos-table" *ngIf="!loading && filteredTodos.length > 0">
-    <div class="table-header">
-      <div class="col-title">Titel</div>
-      <div class="col-status">Status</div>
-      <div class="col-assigned">Zugewiesen an</div>
-      <div class="col-actions">Aktionen</div>
-    </div>
-    <div *ngFor="let todo of filteredTodos" class="table-row" [appHighlightStatus]="todo.status">
-      <div class="col-title">{{ todo.title }}</div>
-      <div class="col-status">
-        <span class="status-badge" [class]="'status-' + todo.status.toLowerCase()">
-          {{ todo.status }}
-        </span>
-      </div>
-      <div class="col-assigned">{{ todo.assignedTo }}</div>
-      <div class="col-actions">
-        <a [routerLink]="['/todos', todo.id]" class="btn-link">Details</a>
-      </div>
+  <div class="page-header">
+    <h2>📋 Alle Aufgaben</h2>
+    <div class="filter-buttons">
+      <button [class.active]="filterStatus === 'ALL'" (click)="onFilterChange('ALL')" class="filter-btn">Alle</button>
+      <button [class.active]="filterStatus === 'OPEN'" (click)="onFilterChange('OPEN')" class="filter-btn filter-open">Offen</button>
+      <button [class.active]="filterStatus === 'IN_PROGRESS'" (click)="onFilterChange('IN_PROGRESS')" class="filter-btn filter-progress">In Bearbeitung</button>
+      <button [class.active]="filterStatus === 'DONE'" (click)="onFilterChange('DONE')" class="filter-btn filter-done">Abgeschlossen</button>
     </div>
   </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="error" class="error-banner">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && filteredTodos.length > 0">
+
+    <!-- OFFEN -->
+    <div class="status-group" *ngIf="openTodos.length > 0 && (filterStatus === 'ALL' || filterStatus === 'OPEN')">
+      <div class="status-group-header group-open">
+        <span class="group-icon">📌</span>
+        <span>Offen ({{ openTodos.length }})</span>
+      </div>
+      <div class="todos-grid">
+        <div *ngFor="let todo of openTodos" class="todo-card">
+          <div class="card-top">
+            <div class="card-title">{{ todo.title }}</div>
+            <span class="badge badge-open">📌 Offen</span>
+          </div>
+          <div class="card-body">
+            <p class="card-desc">{{ todo.description }}</p>
+            <div class="card-meta">👤 Zugewiesen: <strong>{{ todo.assignedTo }}</strong></div>
+          </div>
+          <div class="card-footer">
+            <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-progress" (click)="updateStatus(todo, 'IN_PROGRESS')">⏳ Bearbeitung</button>
+            <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-done" (click)="updateStatus(todo, 'DONE')">✅ Erledigt</button>
+            <button matButton="elevated" matBadge="●" matBadgeColor="warn" matBadgeHidden="!unreadTodoIds.has(todo.id)" class="btn-chat" (click)="openChat(todo)">
+              💬 Chat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IN BEARBEITUNG -->
+    <div class="status-group" *ngIf="inProgressTodos.length > 0 && (filterStatus === 'ALL' || filterStatus === 'IN_PROGRESS')">
+      <div class="status-group-header group-progress">
+        <span class="group-icon">⏳</span>
+        <span>In Bearbeitung ({{ inProgressTodos.length }})</span>
+      </div>
+      <div class="todos-grid">
+        <div *ngFor="let todo of inProgressTodos" class="todo-card">
+          <div class="card-top">
+            <div class="card-title">{{ todo.title }}</div>
+            <span class="badge badge-progress">⏳ Bearbeitung</span>
+          </div>
+          <div class="card-body">
+            <p class="card-desc">{{ todo.description }}</p>
+            <div class="card-meta">👤 Zugewiesen: <strong>{{ todo.assignedTo }}</strong></div>
+          </div>
+          <div class="card-footer">
+            <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-open" (click)="updateStatus(todo, 'OPEN')">📌 Offen</button>
+            <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-done" (click)="updateStatus(todo, 'DONE')">✅ Erledigt</button>
+            <button matButton="elevated" matBadge="●" matBadgeColor="warn" matBadgeHidden="!unreadTodoIds.has(todo.id)" class="btn-chat" (click)="openChat(todo)">
+              💬 Chat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ERLEDIGT -->
+    <div class="status-group" *ngIf="doneTodos.length > 0 && (filterStatus === 'ALL' || filterStatus === 'DONE')">
+      <div class="status-group-header group-done">
+        <span class="group-icon">✅</span>
+        <span>Erledigt ({{ doneTodos.length }})</span>
+      </div>
+      <div class="todos-grid">
+        <div *ngFor="let todo of doneTodos" class="todo-card">
+          <div class="card-top">
+            <div class="card-title">{{ todo.title }}</div>
+            <span class="badge badge-done">✅ Erledigt</span>
+          </div>
+          <div class="card-body">
+            <p class="card-desc">{{ todo.description }}</p>
+            <div class="card-meta">👤 Zugewiesen: <strong>{{ todo.assignedTo }}</strong></div>
+          </div>
+          <div class="card-footer">
+            <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-open" (click)="updateStatus(todo, 'OPEN')">📌 Offen</button>
+            <button *ngIf="!hasRole('ROLE_UPDATE')" class="btn-status btn-progress" (click)="updateStatus(todo, 'IN_PROGRESS')">⏳ Bearbeitung</button>
+            <button matButton="elevated" matBadge="●" matBadgeColor="warn" matBadgeHidden="!unreadTodoIds.has(todo.id)" class="btn-chat" (click)="openChat(todo)">
+              💬 Chat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
 
   <div *ngIf="!loading && filteredTodos.length === 0" class="no-todos">
-    Keine Todos gefunden
+    <p>Keine Aufgaben gefunden</p>
   </div>
+
+  <app-chat-modal
+    [isOpen]="chatModalOpen"
+    [todoId]="activeChatTodo?.id ?? null"
+    [todoTitle]="activeChatTodo?.title ?? ''"
+    (close)="closeChat()">
+  </app-chat-modal>
 </div>

@@ -26,6 +26,7 @@ export class TodoForm implements OnInit {
     this.todoForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
+      status: ['OPEN', Validators.required],
       assignedTo: ['', Validators.required]
     });
   }
@@ -44,15 +45,15 @@ export class TodoForm implements OnInit {
     this.todoService.createTodo({
       title: this.todoForm.get('title')?.value,
       description: this.todoForm.get('description')?.value,
-      status: 'OPEN',
+      status: this.todoForm.get('status')?.value || 'OPEN',
       assignedTo: this.todoForm.get('assignedTo')?.value
     }).subscribe({
-      next: (response: ApiResponse<any>) => {
+      next: (_response: ApiResponse<any>) => {
         this.success = true;
         this.submitting = false;
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 1000);
+          this.router.navigate(['/todos']);
+        }, 1500);
       },
       error: (error) => {
         this.error = 'Failed to create todo';

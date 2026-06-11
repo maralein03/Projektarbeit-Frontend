@@ -24,7 +24,7 @@ export class Header implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
         if (user) {
-          this.username = user.name || user.preferred_username || 'User';
+          this.username = user.username || user.preferred_username || 'User';
         }
       });
   }
