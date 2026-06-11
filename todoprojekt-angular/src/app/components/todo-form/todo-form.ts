@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { ApiResponse } from '../../models';
   templateUrl: './todo-form.html',
   styleUrl: './todo-form.css'
 })
-export class TodoForm implements OnInit {
+export class TodoForm {
   todoForm: FormGroup;
   submitting = false;
   error: string | null = null;
@@ -30,8 +30,6 @@ export class TodoForm implements OnInit {
       assignedTo: ['', Validators.required]
     });
   }
-
-  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.todoForm.invalid) {

@@ -31,6 +31,6 @@
     [isOpen]="chatModalOpen" 
     [todoId]="activeChatTodo?.id ?? null" 
     [todoTitle]="activeChatTodo?.title ?? ''" 
-    (close)="closeChat()">
+    (closed)="closeChat()">
   </app-chat-modal>
 </div>

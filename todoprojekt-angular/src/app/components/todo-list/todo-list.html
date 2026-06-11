@@ -114,7 +114,7 @@
     [isOpen]="chatModalOpen"
     [todoId]="activeChatTodo?.id ?? null"
     [todoTitle]="activeChatTodo?.title ?? ''"
-    (close)="closeChat()">
+    (closed)="closeChat()">
   </app-chat-modal>
 
   <div *ngIf="toastMessage" class="toast" [class.toast-success]="toastType === 'success'" [class.toast-error]="toastType === 'error'">

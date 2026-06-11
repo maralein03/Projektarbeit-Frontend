@@ -13,10 +13,10 @@ export class ChatModal {
   @Input() isOpen = false;
   @Input() todoId: number | null = null;
   @Input() todoTitle: string = '';
-  @Output() close = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
 
   onClose(): void {
-    this.close.emit();
+    this.closed.emit();
   }
 
   onBackdropClick(event: MouseEvent): void {
