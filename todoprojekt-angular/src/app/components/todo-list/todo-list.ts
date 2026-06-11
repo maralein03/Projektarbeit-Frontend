@@ -59,9 +59,11 @@ export class TodoList implements OnInit, OnDestroy {
       });
     });
     this.loadTodos();
-    // Poll for new unread chat messages every 5 seconds
-    interval(5000).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.todos.forEach(todo => this.chatService.checkUnread(todo.id, this.currentUsername));
+    // Poll for new unread chat messages every 10 seconds (batched, not per-todo)
+    interval(10000).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (this.currentUsername) {
+        this.todos.forEach(todo => this.chatService.checkUnread(todo.id, this.currentUsername));
+      }
     });
   }
 
@@ -124,6 +126,29 @@ export class TodoList implements OnInit, OnDestroy {
           console.error('Status update failed:', err);
           this.zone.run(() => {
             this.showToast('Status konnte nicht geändert werden', 'error');
+            this.cdr.markForCheck();
+          });
+        }
+      });
+  }
+
+  deleteTodo(todo: Todo): void {
+    if (!confirm(`Aufgabe "${todo.title}" wirklich löschen?`)) return;
+    this.todoService.deleteTodo(todo.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.zone.run(() => {
+            this.todos = this.todos.filter(t => t.id !== todo.id);
+            this.applyFilter();
+            this.showToast(`Aufgabe "${todo.title}" gelöscht`, 'success');
+            this.cdr.markForCheck();
+          });
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+          this.zone.run(() => {
+            this.showToast('Aufgabe konnte nicht gelöscht werden', 'error');
             this.cdr.markForCheck();
           });
         }

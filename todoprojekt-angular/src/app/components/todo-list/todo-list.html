@@ -40,6 +40,7 @@
               💬 Chat
               <span class="chat-notification" *ngIf="unreadTodoIds.has(todo.id)" title="Neue Nachricht">✉️</span>
             </button>
+            <button *ngIf="hasRole('ROLE_UPDATE')" class="btn-status btn-delete" (click)="deleteTodo(todo)" title="Aufgabe löschen">🗑️ Löschen</button>
           </div>
         </div>
       </div>
@@ -68,6 +69,7 @@
               💬 Chat
               <span class="chat-notification" *ngIf="unreadTodoIds.has(todo.id)" title="Neue Nachricht">✉️</span>
             </button>
+            <button *ngIf="hasRole('ROLE_UPDATE')" class="btn-status btn-delete" (click)="deleteTodo(todo)" title="Aufgabe löschen">🗑️ Löschen</button>
           </div>
         </div>
       </div>
@@ -96,6 +98,7 @@
               💬 Chat
               <span class="chat-notification" *ngIf="unreadTodoIds.has(todo.id)" title="Neue Nachricht">✉️</span>
             </button>
+            <button *ngIf="hasRole('ROLE_UPDATE')" class="btn-status btn-delete" (click)="deleteTodo(todo)" title="Aufgabe löschen">🗑️ Löschen</button>
           </div>
         </div>
       </div>
