@@ -22,6 +22,9 @@ export class Chat implements OnInit, OnDestroy {
   newMessage: string = '';
   loading = true;
   currentUsername: string = '';
+  currentUserId: string = '';
+  currentRoleLabel: string = '';
+  otherRoleLabel: string = '';
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -49,10 +52,22 @@ export class Chat implements OnInit, OnDestroy {
         if (user) {
           this.zone.run(() => {
             this.currentUsername = user.username || user.preferred_username || user.name || '';
+            this.currentUserId = user.id || user.sub || '';
+            const isAusbilder = this.keycloakService.hasRole('ROLE_UPDATE');
+            this.currentRoleLabel = isAusbilder ? 'Ausbilder' : 'Lernender';
+            this.otherRoleLabel = isAusbilder ? 'Lernender' : 'Ausbilder';
             this.cdr.markForCheck();
           });
         }
       });
+  }
+
+  isOwnMessage(msg: ChatMessage): boolean {
+    return msg.sender === this.currentUserId || msg.sender === this.currentUsername;
+  }
+
+  senderLabel(msg: ChatMessage): string {
+    return this.isOwnMessage(msg) ? this.currentRoleLabel + ' (Sie)' : this.otherRoleLabel;
   }
 
   loadMessages(): void {

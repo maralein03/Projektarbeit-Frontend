@@ -8,9 +8,9 @@
       Keine Nachrichten noch. Starten Sie das Gespräch!
     </div>
 
-    <div *ngFor="let msg of messages" class="message" [class.own-message]="msg.sender === currentUsername">
+    <div *ngFor="let msg of messages" class="message" [class.own-message]="isOwnMessage(msg)">
       <div class="message-header">
-        <strong class="sender">{{ msg.sender }}</strong>
+        <strong class="sender">{{ senderLabel(msg) }}</strong>
         <span class="timestamp">{{ msg.createdAt | date:'short' }}</span>
       </div>
       <div class="message-content">{{ msg.message }}</div>

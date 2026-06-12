@@ -29,16 +29,16 @@ export class ChatService {
   }
 
   // Check if a todo has unread messages (messages newer than last seen)
-  public checkUnread(todoId: number, currentUsername: string): void {
+  public checkUnread(todoId: number, currentUserIdentifier: string): void {
     this.getMessages(todoId).subscribe({
       next: (messages) => {
         if (!messages || messages.length === 0) return;
         const lastSeen = this.getLastSeen(todoId);
         const hasUnread = messages.some(m =>
-          m.sender !== currentUsername &&
+          m.sender !== currentUserIdentifier &&
           new Date(m.createdAt).getTime() > lastSeen
         );
-        console.log(`[Chat] todo=${todoId} msgs=${messages.length} lastSeen=${lastSeen} me="${currentUsername}" senders=[${messages.map(m=>m.sender).join(',')}] hasUnread=${hasUnread}`);
+        console.log(`[Chat] todo=${todoId} msgs=${messages.length} lastSeen=${lastSeen} me="${currentUserIdentifier}" senders=[${messages.map(m=>m.sender).join(',')}] hasUnread=${hasUnread}`);
         const current = this.unreadTodos$.value;
         const had = current.has(todoId);
         if (hasUnread) {

@@ -26,6 +26,7 @@ export class TodoList implements OnInit, OnDestroy {
   activeChatTodo: { id: number; title: string } | null = null;
   unreadTodoIds: Set<number> = new Set();
   currentUsername: string = '';
+  currentUserId: string = '';
   toastMessage: string | null = null;
   toastType: 'success' | 'error' = 'success';
   private toastTimer: any = null;
@@ -50,7 +51,10 @@ export class TodoList implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.keycloakService.getUser().pipe(takeUntil(this.destroy$)).subscribe(user => {
-      if (user) this.currentUsername = user.username || user.preferred_username || '';
+      if (user) {
+        this.currentUsername = user.username || user.preferred_username || '';
+        this.currentUserId = user.id || user.sub || '';
+      }
     });
     this.chatService.unreadTodos.pipe(takeUntil(this.destroy$)).subscribe(ids => {
       this.zone.run(() => {
@@ -61,8 +65,9 @@ export class TodoList implements OnInit, OnDestroy {
     this.loadTodos();
     // Poll for new unread chat messages every 10 seconds (batched, not per-todo)
     interval(10000).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      if (this.currentUsername) {
-        this.todos.forEach(todo => this.chatService.checkUnread(todo.id, this.currentUsername));
+      const me = this.currentUserId || this.currentUsername;
+      if (me) {
+        this.todos.forEach(todo => this.chatService.checkUnread(todo.id, me));
       }
     });
   }
@@ -79,7 +84,10 @@ export class TodoList implements OnInit, OnDestroy {
             this.loading = false;
             this.cdr.markForCheck();
             // Check unread messages for all todos
-            this.todos.forEach(todo => this.chatService.checkUnread(todo.id, this.currentUsername));
+            const me = this.currentUserId || this.currentUsername;
+            if (me) {
+              this.todos.forEach(todo => this.chatService.checkUnread(todo.id, me));
+            }
           });
         },
         error: (error) => {
